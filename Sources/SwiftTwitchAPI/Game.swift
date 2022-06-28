@@ -12,7 +12,7 @@ extension SwiftTwitchAPI {
         let box_art_url: String
     }
     
-    func getTopGames(completionHandler: @escaping (Result<Paginated<[GameResponse]>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "games/top", completionHandler: completionHandler)
+    func getTopGames(onCompletion: @escaping (Result<Paginated<[GameResponse]>, TwitchAPIError>) -> Void) {
+        requestAPI(endpoint: "games/top", onCompletion: onCompletion)
     }
 }

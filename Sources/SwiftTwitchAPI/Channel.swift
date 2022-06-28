@@ -19,11 +19,11 @@ extension SwiftTwitchAPI {
         let delay: Int
     }
     
-    func getChannel(broadcaster_ids: [String], completionHandler: @escaping (Result<Paginated<[ChannelResponse]>, TwitchAPIError>) -> Void) {
+    func getChannel(broadcaster_ids: [String], onCompletion: @escaping (Result<Paginated<[ChannelResponse]>, TwitchAPIError>) -> Void) {
         var endpoint = "channels?"
         for id in broadcaster_ids {
             endpoint += "broadcaster_id=\(id)&"
         }
-        requestAPI(endpoint: endpoint, completionHandler: completionHandler)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }
