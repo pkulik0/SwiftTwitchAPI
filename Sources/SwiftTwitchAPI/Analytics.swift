@@ -8,11 +8,6 @@
 import Foundation
 
 extension SwiftTwitchAPI {
-    struct DateRange: Codable {
-        let ended_at: String
-        let started_at: String
-    }
-    
     struct ExtensionAnalyticsResponse: Codable {
         let extension_id: String
         let date_range: DateRange
