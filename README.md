@@ -1,3 +1,3 @@
 # SwiftTwitchAPI
 
-A description of this package.
+Unoffical Swift library for Twitch's public API
