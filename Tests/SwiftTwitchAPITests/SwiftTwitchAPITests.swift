@@ -92,4 +92,40 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation], timeout: 30.0)
     }
+    
+    func testBitsLeaderboard() throws {
+        let expectation = XCTestExpectation(description: "api")
+        
+        api.getBitsLeaderboard(user_id: "109027939") { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 30.0)
+    }
+    
+    func testBitsCheermotes() throws {
+        let expectation = XCTestExpectation(description: "api")
+        
+        api.getBitsCheermotes { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 30.0)
+    }
 }
