@@ -6,18 +6,13 @@
 //
 
 extension SwiftTwitchAPI {
-    class GameResponse: Codable {
+    struct GameResponse: Codable {
         let id: String
         let name: String
         let box_art_url: String
     }
     
     func getTopGames(completionHandler: @escaping (Result<Paginated<[GameResponse]>, TwitchAPIError>) -> Void) {
-        guard let authToken = authToken else {
-            completionHandler(.failure(.missingToken))
-            return
-        }
-
-        requestAPI(authToken: authToken, endpoint: "games/top", completionHandler: completionHandler)
+        requestAPI(endpoint: "games/top", completionHandler: completionHandler)
     }
 }

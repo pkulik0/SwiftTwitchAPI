@@ -2,13 +2,14 @@ import Foundation
 
 public struct SwiftTwitchAPI {
     private let clientID: String
-    public var authToken: String?
+    var authToken: String
 
-    public init(clientID: String) {
+    public init(clientID: String, authToken: String) {
         self.clientID = clientID
+        self.authToken = authToken
     }
 
-    func requestAPI<T: Codable>(authToken: String, endpoint: String, completionHandler: @escaping (Result<T, TwitchAPIError>) -> Void) {
+    func requestAPI<T: Codable>(endpoint: String, completionHandler: @escaping (Result<T, TwitchAPIError>) -> Void) {
         let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
         var request = URLRequest(url: apiURL)
         request.setValue(clientID, forHTTPHeaderField: "Client-Id")

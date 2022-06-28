@@ -6,7 +6,7 @@
 //
 
 extension SwiftTwitchAPI {
-    class ChannelResponse: Codable {
+    struct ChannelResponse: Codable {
         let broadcaster_id: String
         let broadcaster_login: String
         let broadcaster_name: String
@@ -20,14 +20,10 @@ extension SwiftTwitchAPI {
     }
     
     func getChannel(broadcaster_ids: [String], completionHandler: @escaping (Result<Paginated<[ChannelResponse]>, TwitchAPIError>) -> Void) {
-        guard let authToken = authToken else {
-            completionHandler(.failure(.missingToken))
-            return
-        }
         var endpoint = "channels?"
         for id in broadcaster_ids {
             endpoint += "broadcaster_id=\(id)&"
         }
-        requestAPI(authToken: authToken, endpoint: endpoint, completionHandler: completionHandler)
+        requestAPI(endpoint: endpoint, completionHandler: completionHandler)
     }
 }
