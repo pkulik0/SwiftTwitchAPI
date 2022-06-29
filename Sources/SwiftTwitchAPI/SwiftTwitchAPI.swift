@@ -12,6 +12,7 @@ public struct SwiftTwitchAPI {
     internal enum RequestMethod: String {
         case GET = "GET"
         case POST = "POST"
+        case PATCH = "PATCH"
     }
     
     internal func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
@@ -23,6 +24,38 @@ public struct SwiftTwitchAPI {
             return "\(endpoint)?\(parametersString)"
         }
         return endpoint
+    }
+    
+    internal func requestAPI(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+        let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
+        
+        var request = URLRequest(url: apiURL)
+        request.setValue(clientID, forHTTPHeaderField: "Client-Id")
+        request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = requestMethod.rawValue
+        
+        if requestMethod != .GET {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print(error.localizedDescription)
+                onCompletion(.failure(.invalidResponse))
+                return
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                let statusCode = response.statusCode
+                if statusCode == 204 {
+                    onCompletion(.success(statusCode))
+                }
+                return
+            }
+            onCompletion(.failure(.invalidResponse))
+        }.resume()
     }
     
     internal func requestAPI<T: Codable>(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<T, TwitchAPIError>) -> Void) {
@@ -45,11 +78,16 @@ public struct SwiftTwitchAPI {
                 onCompletion(.failure(.invalidResponse))
                 return
             }
+            
             guard let data = data else {
                 onCompletion(.failure(.invalidResponse))
                 return
             }
-            print(data.JSONString!)
+            
+            if let json = data.JSONString {
+                print(json)
+            }
+            
             if let response = try? JSONDecoder().decode(T.self, from: data) {
                 onCompletion(.success(response))
                 return

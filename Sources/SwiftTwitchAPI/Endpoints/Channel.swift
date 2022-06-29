@@ -37,4 +37,28 @@ extension SwiftTwitchAPI {
         }
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
+
+    func modifyChannel(broadcasterID: String, gameID: String? = nil, broadcasterLanguage: String? = nil, title: String? = nil, delay: Int? = nil, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+        
+        var requestBody: [String: Any] = [:]
+        if let gameID = gameID {
+            requestBody["game_id"] = gameID
+        }
+        if let broadcasterLanguage = broadcasterLanguage {
+            requestBody["broadcaster_language"] = broadcasterLanguage
+        }
+        if let title = title {
+            requestBody["title"] = title
+        }
+        if let delay = delay {
+            requestBody["delay"] = delay
+        }
+        
+        if requestBody.isEmpty {
+            onCompletion(.failure(.tooFewParameters))
+            return
+        }
+        
+        requestAPI(endpoint: "channels?broadcaster_id=\(broadcasterID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+    }
 }

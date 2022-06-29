@@ -2,7 +2,7 @@ import XCTest
 @testable import SwiftTwitchAPI
 
 class SwiftTwitchAPITests: XCTestCase {
-    let api = SwiftTwitchAPI(clientID: "thffseh4mtlmaqnd89rm17ugso8s30", authToken: "8n137zor35bxuft3ymsapwe2xckx8u")
+    let api = SwiftTwitchAPI(clientID: "thffseh4mtlmaqnd89rm17ugso8s30", authToken: "bgort9x2teupqmob3m15m0kihqjld3")
     let testerID = "118350674"
     
     func testGetChannels() throws {
@@ -42,7 +42,7 @@ class SwiftTwitchAPITests: XCTestCase {
     func testRunCommercial() throws {
         let expectation = XCTestExpectation(description: "api")
         
-        api.runCommercial(broadcasterID: tester_id, length: 60) { result in
+        api.runCommercial(broadcasterID: testerID, length: 60) { result in
             switch(result) {
             case .success(let commercialResponse):
                 XCTAssert(commercialResponse.data.first != nil)
@@ -117,6 +117,24 @@ class SwiftTwitchAPITests: XCTestCase {
             switch(result) {
             case .success(_):
                 break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 30.0)
+    }
+    
+    func testModifyChannel() throws {
+        let expectation = XCTestExpectation(description: "api")
+        
+        api.modifyChannel(broadcasterID: testerID, title: "title \(Int.random(in: 0...100))") { result in
+            switch(result) {
+            case .success(let statusCode):
+                XCTAssert(statusCode == 204)
             case .failure(.serverError(error: let error)):
                 XCTFail(error.message)
             case .failure(let error):
