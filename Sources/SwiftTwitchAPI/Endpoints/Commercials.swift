@@ -17,7 +17,7 @@ extension SwiftTwitchAPI {
             case retryAfter = "retry_after"
         }
     }
-    func runCommercial(broadcaster_id: String, length: Int, onCompletion: @escaping (Result<Paginated<[CommercialResponse]>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "channels/commercial", requestMethod: .POST, requestBody: ["broadcaster_id": broadcaster_id, "length": length], onCompletion: onCompletion)
+    func runCommercial(broadcasterID: String, length: Int, onCompletion: @escaping (Result<Paginated<[CommercialResponse]>, TwitchAPIError>) -> Void) {
+        requestAPI(endpoint: "channels/commercial", requestMethod: .POST, requestBody: ["broadcaster_id": broadcasterID, "length": length], onCompletion: onCompletion)
     }
 }

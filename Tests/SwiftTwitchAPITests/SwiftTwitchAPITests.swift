@@ -3,13 +3,12 @@ import XCTest
 
 class SwiftTwitchAPITests: XCTestCase {
     let api = SwiftTwitchAPI(clientID: "thffseh4mtlmaqnd89rm17ugso8s30", authToken: "8n137zor35bxuft3ymsapwe2xckx8u")
-    let tester_id = "118350674"
-    let panicOnScopeError = false
+    let testerID = "118350674"
     
     func testGetChannels() throws {
         let expectation = XCTestExpectation(description: "api")
         
-        api.getChannel(broadcaster_ids: [tester_id]) { result in
+        api.getChannel(broadcasterIDs: [testerID]) { result in
             switch(result) {
             case .success(let channels):
                 XCTAssertFalse(channels.data.isEmpty)
@@ -43,7 +42,7 @@ class SwiftTwitchAPITests: XCTestCase {
     func testRunCommercial() throws {
         let expectation = XCTestExpectation(description: "api")
         
-        api.runCommercial(broadcaster_id: tester_id, length: 60) { result in
+        api.runCommercial(broadcasterID: tester_id, length: 60) { result in
             switch(result) {
             case .success(let commercialResponse):
                 XCTAssert(commercialResponse.data.first != nil)
@@ -96,7 +95,7 @@ class SwiftTwitchAPITests: XCTestCase {
     func testBitsLeaderboard() throws {
         let expectation = XCTestExpectation(description: "api")
         
-        api.getBitsLeaderboard(user_id: "109027939") { result in
+        api.getBitsLeaderboard(userID: "109027939") { result in
             switch(result) {
             case .success(_):
                 break

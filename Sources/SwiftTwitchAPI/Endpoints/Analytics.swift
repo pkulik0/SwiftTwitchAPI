@@ -36,16 +36,19 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getExtensionsAnalytics(after: String? = nil, started_at: String? = nil, ended_at: String? = nil, extension_id: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<[ExtensionAnalyticsResponse]>, TwitchAPIError>) -> Void) {
+    func getExtensionsAnalytics(after: String? = nil, startedAt: String? = nil, endedAt: String? = nil, extensionID: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<[ExtensionAnalyticsResponse]>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let after = after {
             parameters["after"] = after
         }
-        if let started_at = started_at {
-            parameters["started_at"] = started_at
+        if let startedAt = startedAt {
+            parameters["started_at"] = startedAt
         }
-        if let extension_id = extension_id {
-            parameters["extension_id"] = extension_id
+        if let endedAt = endedAt {
+            parameters["ended_at"] = endedAt
+        }
+        if let extensionID = extensionID {
+            parameters["extension_id"] = extensionID
         }
         if let first = first {
             parameters["first"] = String(first)
@@ -58,16 +61,19 @@ extension SwiftTwitchAPI {
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getGamesAnalytics(after: String? = nil, started_at: String? = nil, ended_at: String? = nil, game_id: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<[GameAnalyticsResponse]>, TwitchAPIError>) -> Void) {
+    func getGamesAnalytics(after: String? = nil, startedAt: String? = nil, endedAt: String? = nil, gameID: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<[GameAnalyticsResponse]>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let after = after {
             parameters["after"] = after
         }
-        if let started_at = started_at {
-            parameters["started_at"] = started_at
+        if let startedAt = startedAt {
+            parameters["started_at"] = startedAt
         }
-        if let game_id = game_id {
-            parameters["game_id"] = game_id
+        if let endedAt = endedAt {
+            parameters["ended_at"] = endedAt
+        }
+        if let gameID = gameID {
+            parameters["game_id"] = gameID
         }
         if let first = first {
             parameters["first"] = String(first)

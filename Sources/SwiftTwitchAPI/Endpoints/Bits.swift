@@ -89,7 +89,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getBitsLeaderboard(count: Int? = nil, period: String? = nil, started_at: String? = nil, user_id: String? = nil, onCompletion: @escaping (Result<Paginated<[BitsLeaderboardResponse]>, TwitchAPIError>) -> Void) {
+    func getBitsLeaderboard(count: Int? = nil, period: String? = nil, startedAt: String? = nil, userID: String? = nil, onCompletion: @escaping (Result<Paginated<[BitsLeaderboardResponse]>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let count = count {
             parameters["count"] = String(count)
@@ -97,20 +97,20 @@ extension SwiftTwitchAPI {
         if let period = period {
             parameters["period"] = period
         }
-        if let started_at = started_at {
-            parameters["started_at"] = started_at
+        if let startedAt = startedAt {
+            parameters["started_at"] = startedAt
         }
-        if let user_id = user_id {
-            parameters["user_id"] = user_id
+        if let userID = userID {
+            parameters["user_id"] = userID
         }
         let endpoint = appendParameters(parameters, to: "bits/leaderboard")
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getBitsCheermotes(broadcaster_id: String? = nil, onCompletion: @escaping (Result<Paginated<[BitsCheermoteResponse]>, TwitchAPIError>) -> Void) {
+    func getBitsCheermotes(broadcasterID: String? = nil, onCompletion: @escaping (Result<Paginated<[BitsCheermoteResponse]>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
-        if let broadcaster_id = broadcaster_id {
-            parameters["broadcaster_id"] = broadcaster_id
+        if let broadcasterID = broadcasterID {
+            parameters["broadcaster_id"] = broadcasterID
         }
         let endpoint = appendParameters(parameters, to: "bits/cheermotes")
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
