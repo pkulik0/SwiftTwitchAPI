@@ -9,7 +9,13 @@ extension SwiftTwitchAPI {
     struct GameResponse: Codable {
         let id: String
         let name: String
-        let box_art_url: String
+        let boxArtUrl: String
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case boxArtUrl = "box_art_url"
+        }
     }
     
     func getTopGames(onCompletion: @escaping (Result<Paginated<[GameResponse]>, TwitchAPIError>) -> Void) {

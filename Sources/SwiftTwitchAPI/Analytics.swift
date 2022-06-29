@@ -9,17 +9,31 @@ import Foundation
 
 extension SwiftTwitchAPI {
     struct ExtensionAnalyticsResponse: Codable {
-        let extension_id: String
-        let date_range: DateRange
+        let extensionID: String
+        let dateRange: DateRange
         let type: String
         let url: String
+        
+        enum CodingKeys: String, CodingKey {
+            case extensionID = "extension_id"
+            case dateRange = "date_range"
+            case type
+            case url
+        }
     }
     
     struct GameAnalyticsResponse: Codable {
-        let game_id: String
-        let date_range: DateRange
+        let gameID: String
+        let dateRange: DateRange
         let type: String
         let url: String
+        
+        enum CodingKeys: String, CodingKey {
+            case gameID = "game_id"
+            case dateRange = "date_range"
+            case type
+            case url
+        }
     }
     
     func getExtensionsAnalytics(after: String? = nil, started_at: String? = nil, ended_at: String? = nil, extension_id: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<[ExtensionAnalyticsResponse]>, TwitchAPIError>) -> Void) {

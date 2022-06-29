@@ -7,16 +7,27 @@
 
 extension SwiftTwitchAPI {
     struct ChannelResponse: Codable {
-        let broadcaster_id: String
-        let broadcaster_login: String
-        let broadcaster_name: String
-        let broadcaster_language: String
+        let broadcasterID: String
+        let broadcasterLogin: String
+        let broadcasterName: String
+        let broadcasterLanguage: String
         
-        let game_name: String
-        let game_id: String
+        let gameName: String
+        let gameID: String
         
         let title: String
         let delay: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case broadcasterID = "broadcaster_id"
+            case broadcasterLogin = "broadcaster_login"
+            case broadcasterName = "broadcaster_name"
+            case broadcasterLanguage = "broadcaster_language"
+            case gameName = "game_name"
+            case gameID = "game_id"
+            case title
+            case delay
+        }
     }
     
     func getChannel(broadcaster_ids: [String], onCompletion: @escaping (Result<Paginated<[ChannelResponse]>, TwitchAPIError>) -> Void) {
