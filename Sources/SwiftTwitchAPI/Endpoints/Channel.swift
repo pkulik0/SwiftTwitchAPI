@@ -30,6 +30,18 @@ extension SwiftTwitchAPI {
         }
     }
     
+    struct ChannelEditorResponse: Codable {
+        let userID: String
+        let userName: String
+        let createdAt: String
+        
+        enum CodingKeys: String, CodingKey {
+            case userID = "user_id"
+            case userName = "user_name"
+            case createdAt = "created_at"
+        }
+    }
+    
     func getChannel(broadcasterIDs: [String], onCompletion: @escaping (Result<Paginated<[ChannelResponse]>, TwitchAPIError>) -> Void) {
         var endpoint = "channels?"
         for id in broadcasterIDs {
@@ -60,5 +72,9 @@ extension SwiftTwitchAPI {
         }
         
         requestAPI(endpoint: "channels?broadcaster_id=\(broadcasterID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+    }
+    
+    func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<[ChannelEditorResponse], TwitchAPIError>) -> Void) {
+        requestAPI(endpoint: "channels/editors?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
 }
