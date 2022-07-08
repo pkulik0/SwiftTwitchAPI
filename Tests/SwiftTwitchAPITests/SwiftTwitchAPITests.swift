@@ -145,4 +145,22 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation], timeout: 30.0)
     }
+    
+    func testGetChannelEditors() throws {
+        let expectation = XCTestExpectation(description: "api")
+        
+        api.getChannelEditors(broadcasterID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 30.0)
+    }
 }

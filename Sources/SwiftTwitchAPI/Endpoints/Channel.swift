@@ -74,13 +74,13 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<[ChannelEditorResponse], TwitchAPIError>) -> Void) {
+    func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<Paginated<[ChannelEditorResponse]>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "channels/editors?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     struct ChannelRewardResponse: Codable {
         let broadcasterID: String
-        let broadcasterName: String
+        let broadcasterLogin: String
         let broadcasterName: String
         let id: String
         let title: String
@@ -138,9 +138,10 @@ extension SwiftTwitchAPI {
         let maxPerUserPerStreamSettigs: PerUserPerStreamCooldown
         let globalCooldownSettings: GlobalCooldown
         
-        struct CodingKeys: String, CodingKey {
-            case id, title, prompt, image
+        enum CodingKeys: String, CodingKey {
+            case id, title, prompt, image, cost
             case broadcasterID = "broadcaster_id"
+            case broadcasterLogin = "broadcaster_login"
             case broadcasterName = "broadcaster_name"
             case defaultImage = "default_image"
             case backgroundColor = "background_color"
@@ -157,7 +158,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String?, isEnabled: Bool?, backgroundColor: String?, isUserInputRequired: Bool?, isMaxPerStreamEnabled: Bool?, maxPerStream: Int?, isMaxPerUserPerStreamEnabled: Bool?, maxPerUserPerStream: Int?, isGlobalCooldownEnabled: Bool?, globalCooldown: Int?, shouldSkipQueue: Bool?, onCompletion: @escaping (Result<[ChannelRewardResponse], TwitchAPIError>) -> Void) {
+    func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String?, isEnabled: Bool?, backgroundColor: String?, isUserInputRequired: Bool?, isMaxPerStreamEnabled: Bool?, maxPerStream: Int?, isMaxPerUserPerStreamEnabled: Bool?, maxPerUserPerStream: Int?, isGlobalCooldownEnabled: Bool?, globalCooldown: Int?, shouldSkipQueue: Bool?, onCompletion: @escaping (Result<Paginated<[ChannelRewardResponse]>, TwitchAPIError>) -> Void) {
         var requestBody: [String: Any] = [:]
         requestBody["title"] = title
         requestBody["cost"] = cost
