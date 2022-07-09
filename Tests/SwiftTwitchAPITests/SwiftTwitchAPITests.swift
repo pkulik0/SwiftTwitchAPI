@@ -245,4 +245,55 @@ class SwiftTwitchAPITests: XCTestCase {
         }
         wait(for: [expectation], timeout: 30.0)
     }
+    
+    func testGetEmotes() throws {
+        let expectation1 = XCTestExpectation(description: "getChannelEmotes")
+        let expectation2 = XCTestExpectation(description: "getGlobalEmotes")
+        
+        var emoteSetID: String?
+        
+        api.getChannelEmotes(broadcasterID: testerID) { result in
+            expectation1.fulfill()
+            switch(result) {
+            case .success(let response):
+                emoteSetID = response.data.first?.emoteSetID
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        api.getGlobalEmotes { result in
+            expectation2.fulfill()
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        wait(for: [expectation1, expectation2], timeout: 30.0)
+        
+        guard let emoteSetID = emoteSetID else {
+            XCTFail("No emotes received.")
+            return
+        }
+        
+        let expectation3 = XCTestExpectation(description: "getEmoteSet")
+        api.getEmoteSets(emoteSetIDs: [emoteSetID]) { result in
+            expectation3.fulfill()
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        wait(for: [expectation3], timeout: 30.0)
+    }
 }
