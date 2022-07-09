@@ -56,11 +56,12 @@ class SwiftTwitchAPITests: XCTestCase {
         wait(for: [expectation], timeout: 30.0)
     }
     
-    func testExtensionsAnalytics() throws {
-        let expectation = XCTestExpectation(description: "api")
+    func testAnalytics() throws {
+        let expectation1 = XCTestExpectation(description: "extensionsAnalytics")
+        let expectation2 = XCTestExpectation(description: "gameAnalytics")
         
         api.getExtensionsAnalytics { result in
-            expectation.fulfill()
+            expectation1.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -70,15 +71,9 @@ class SwiftTwitchAPITests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }
         }
-        
-        wait(for: [expectation], timeout: 30.0)
-    }
-    
-    func testGameAnalytics() throws {
-        let expectation = XCTestExpectation(description: "api")
         
         api.getGamesAnalytics { result in
-            expectation.fulfill()
+            expectation2.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -89,14 +84,15 @@ class SwiftTwitchAPITests: XCTestCase {
             }
         }
         
-        wait(for: [expectation], timeout: 30.0)
+        wait(for: [expectation1, expectation2], timeout: 30.0)
     }
     
-    func testBitsLeaderboard() throws {
-        let expectation = XCTestExpectation(description: "api")
+    func testBits() throws {
+        let expectation1 = XCTestExpectation(description: "bitsLeaderboard")
+        let expectation2 = XCTestExpectation(description: "bitsCheermotes")
         
         api.getBitsLeaderboard(userID: testerID) { result in
-            expectation.fulfill()
+            expectation1.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -106,15 +102,9 @@ class SwiftTwitchAPITests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }
         }
-        
-        wait(for: [expectation], timeout: 30.0)
-    }
-    
-    func testBitsCheermotes() throws {
-        let expectation = XCTestExpectation(description: "api")
         
         api.getBitsCheermotes { result in
-            expectation.fulfill()
+            expectation2.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -125,7 +115,7 @@ class SwiftTwitchAPITests: XCTestCase {
             }
         }
         
-        wait(for: [expectation], timeout: 30.0)
+        wait(for: [expectation1, expectation2], timeout: 30.0)
     }
     
     func testModifyChannel() throws {
@@ -164,7 +154,7 @@ class SwiftTwitchAPITests: XCTestCase {
         wait(for: [expectation], timeout: 30.0)
     }
     
-    func testChannelRewards() throws {
+    func testRewards() throws {
         var expectation = XCTestExpectation(description: "createReward")
         
         var rewardID: String?
