@@ -36,7 +36,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getExtensionsAnalytics(after: String? = nil, startedAt: String? = nil, endedAt: String? = nil, extensionID: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<[ExtensionAnalyticsResponse]>, TwitchAPIError>) -> Void) {
+    func getExtensionsAnalytics(after: String? = nil, startedAt: String? = nil, endedAt: String? = nil, extensionID: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<ExtensionAnalyticsResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let after = after {
             parameters["after"] = after
@@ -61,7 +61,7 @@ extension SwiftTwitchAPI {
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getGamesAnalytics(after: String? = nil, startedAt: String? = nil, endedAt: String? = nil, gameID: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<[GameAnalyticsResponse]>, TwitchAPIError>) -> Void) {
+    func getGamesAnalytics(after: String? = nil, startedAt: String? = nil, endedAt: String? = nil, gameID: String? = nil, first: Int? = nil, type: String? = nil, onCompletion: @escaping (Result<Paginated<GameAnalyticsResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let after = after {
             parameters["after"] = after

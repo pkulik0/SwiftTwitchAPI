@@ -30,7 +30,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getChannel(broadcasterIDs: [String], onCompletion: @escaping (Result<Paginated<[ChannelResponse]>, TwitchAPIError>) -> Void) {
+    func getChannel(broadcasterIDs: [String], onCompletion: @escaping (Result<Paginated<ChannelResponse>, TwitchAPIError>) -> Void) {
         var endpoint = "channels?"
         for id in broadcasterIDs {
             endpoint += "broadcaster_id=\(id)&"
@@ -74,7 +74,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<Paginated<[ChannelEditorResponse]>, TwitchAPIError>) -> Void) {
+    func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelEditorResponse>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "channels/editors?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
@@ -160,11 +160,15 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<[ChannelRewardResponse]>, TwitchAPIError>) -> Void) {
+    fileprivate func getChannelRewardRequestBody(title: String?, cost: Int?, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil) -> [String: Any] {
         var requestBody: [String: Any] = [:]
-        requestBody["title"] = title
-        requestBody["cost"] = cost
         
+        if let title = title {
+            requestBody["title"] = title
+        }
+        if let cost = cost {
+            requestBody["cost"] = cost
+        }
         if let prompt = prompt {
             requestBody["prompt"] = prompt
         }
@@ -192,15 +196,106 @@ extension SwiftTwitchAPI {
         if let shouldSkipQueue = shouldSkipQueue {
             requestBody["should_redemptions_skip_request_queue"] = shouldSkipQueue
         }
+        return requestBody
+    }
+    
+    func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
+        let requestBody = getChannelRewardRequestBody(title: title, cost: cost, prompt: prompt, isEnabled: isEnabled, backgroundColor: backgroundColor, isUserInputRequired: isUserInputRequired, isMaxPerStreamEnabled: isMaxPerStreamEnabled, maxPerStream: maxPerStream, isMaxPerUserPerStreamEnabled: isMaxPerStreamEnabled, maxPerUserPerStream: maxPerUserPerStream, isGlobalCooldownEnabled: isGlobalCooldownEnabled, globalCooldown: globalCooldown, shouldSkipQueue: shouldSkipQueue)
         
         requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
+    }
+    
+    func updateChannelReward(broadcasterID: String, rewardID: String, title: String? = nil, cost: Int? = nil, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
+        let requestBody = getChannelRewardRequestBody(title: title, cost: cost, prompt: prompt, isEnabled: isEnabled, backgroundColor: backgroundColor, isUserInputRequired: isUserInputRequired, isMaxPerStreamEnabled: isMaxPerStreamEnabled, maxPerStream: maxPerStream, isMaxPerUserPerStreamEnabled: isMaxPerStreamEnabled, maxPerUserPerStream: maxPerUserPerStream, isGlobalCooldownEnabled: isGlobalCooldownEnabled, globalCooldown: globalCooldown, shouldSkipQueue: shouldSkipQueue)
+        
+        if requestBody.isEmpty {
+            onCompletion(.failure(.tooFewParameters))
+            return
+        }
+
+        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     func removeChannelReward(broadcasterID: String, rewardID: String, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .DELETE, onCompletion: onCompletion)
     }
     
-    func getChannelRewards(broadcasterID: String, onlyManagable: Bool = false, onCompletion: @escaping (Result<Paginated<[ChannelRewardResponse]>, TwitchAPIError>) -> Void) {
+    func getChannelRewards(broadcasterID: String, onlyManagable: Bool = false, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&only_manageable_rewards=\(onlyManagable)", onCompletion: onCompletion)
+    }
+    
+    struct ChannelRewardRedemptionResponse: Codable {
+        let broadcasterName: String
+        let broadcasterLogin: String
+        let broadcasterID: String
+        let userLogin: String
+        let userName: String
+        let userID: String
+        let userInput: String
+        let id: String
+        let status: Status
+        let redeemedAt: String
+        let reward: Reward
+
+        enum CodingKeys: String, CodingKey {
+            case id, status, reward
+            case broadcasterName = "broadcaster_name"
+            case broadcasterLogin = "broadcaster_login"
+            case broadcasterID = "broadcaster_id"
+            case userLogin = "user_login"
+            case userID = "user_id"
+            case userName = "user_name"
+            case userInput = "user_input"
+            case redeemedAt = "redeemed_at"
+        }
+        
+        enum Status: String, Codable {
+            case unfulfilled = "UNFULFILLED"
+            case fulfilled = "FULFILLED"
+            case cancelled = "CANCELLED"
+        }
+        
+        enum SortType: String, Codable {
+            case oldToNew = "OLDEST"
+            case newToOld = "NEWEST"
+        }
+        
+        struct Reward: Codable {
+            let id: String
+            let title: String
+            let prompt: String
+            let cost: Int
+        }
+    }
+    
+    func getChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionID: String? = nil, status: ChannelRewardRedemptionResponse.Status? = nil, sort: ChannelRewardRedemptionResponse.SortType? = nil, after: String? = nil, first: Int? = nil,  onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
+        if status == nil && redemptionID == nil {
+            onCompletion(.failure(.tooFewParameters))
+            return
+        }
+        
+        var parameters: [String: String] = [:]
+        
+        if let redemptionID = redemptionID {
+            parameters["redemption_id"] = redemptionID
+        }
+        if let status = status {
+            parameters["status"] = status.rawValue
+        }
+        if let sort = sort {
+            parameters["sort"] = sort.rawValue
+        }
+        if let after = after {
+            parameters["after"] = after
+        }
+        if let first = first {
+            parameters["first"] = String(first)
+        }
+        
+        parameters["broadcaster_id"] = broadcasterID
+        parameters["reward_id"] = rewardID
+        
+        let endpoint = appendParameters(parameters, to: "channel_points/custom_rewards/redemptions")
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

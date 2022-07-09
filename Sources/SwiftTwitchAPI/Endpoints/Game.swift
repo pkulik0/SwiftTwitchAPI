@@ -18,7 +18,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getTopGames(onCompletion: @escaping (Result<Paginated<[GameResponse]>, TwitchAPIError>) -> Void) {
+    func getTopGames(onCompletion: @escaping (Result<Paginated<GameResponse>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "games/top", onCompletion: onCompletion)
     }
 }

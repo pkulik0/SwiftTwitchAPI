@@ -49,7 +49,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getExtensionTransactions(ids: [String], after: String? = nil, first: Int? = nil, extensionID: String, onCompletion: @escaping (Result<Paginated<[ExtensionTransactionResponse]>, TwitchAPIError>) -> Void) {
+    func getExtensionTransactions(ids: [String], after: String? = nil, first: Int? = nil, extensionID: String, onCompletion: @escaping (Result<Paginated<ExtensionTransactionResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         if let after = after {

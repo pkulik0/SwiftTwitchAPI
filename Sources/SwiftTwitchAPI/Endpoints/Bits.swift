@@ -89,7 +89,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getBitsLeaderboard(count: Int? = nil, period: String? = nil, startedAt: String? = nil, userID: String? = nil, onCompletion: @escaping (Result<Paginated<[BitsLeaderboardResponse]>, TwitchAPIError>) -> Void) {
+    func getBitsLeaderboard(count: Int? = nil, period: String? = nil, startedAt: String? = nil, userID: String? = nil, onCompletion: @escaping (Result<Paginated<BitsLeaderboardResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let count = count {
             parameters["count"] = String(count)
@@ -107,7 +107,7 @@ extension SwiftTwitchAPI {
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getBitsCheermotes(broadcasterID: String? = nil, onCompletion: @escaping (Result<Paginated<[BitsCheermoteResponse]>, TwitchAPIError>) -> Void) {
+    func getBitsCheermotes(broadcasterID: String? = nil, onCompletion: @escaping (Result<Paginated<BitsCheermoteResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let broadcasterID = broadcasterID {
             parameters["broadcaster_id"] = broadcasterID

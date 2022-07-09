@@ -169,7 +169,8 @@ class SwiftTwitchAPITests: XCTestCase {
         
         var rewardID: String?
         let rewardTitle = "test" + UUID().uuidString
-        api.createChannelReward(broadcasterID: testerID, title: rewardTitle, cost: 999) { result in
+        let rewardPrice = Int.random(in: 1...10000000)
+        api.createChannelReward(broadcasterID: testerID, title: rewardTitle, cost: rewardPrice) { result in
             expectation.fulfill()
             switch(result) {
             case .success(let response):
@@ -187,6 +188,21 @@ class SwiftTwitchAPITests: XCTestCase {
             return
         }
         
+        expectation = XCTestExpectation(description: "updateReward")
+        let prompt = "test" + UUID().uuidString
+        api.updateChannelReward(broadcasterID: testerID, rewardID: rewardID, prompt: prompt) { result in
+            expectation.fulfill()
+            switch(result) {
+            case .success(let result):
+                XCTAssert(result.data.contains(where: { $0.prompt == prompt }))
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        wait(for: [expectation], timeout: 30.0)
+        
         expectation = XCTestExpectation(description: "getRewards")
         api.getChannelRewards(broadcasterID: testerID) { result in
             expectation.fulfill()
@@ -199,7 +215,20 @@ class SwiftTwitchAPITests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }
         }
+        wait(for: [expectation], timeout: 30.0)
         
+        expectation = XCTestExpectation(description: "getRedemptions")
+        api.getChannelRewardRedemption(broadcasterID: testerID, rewardID: rewardID, status: .unfulfilled) { result in
+            expectation.fulfill()
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
         wait(for: [expectation], timeout: 30.0)
         
         expectation = XCTestExpectation(description: "removeReward")
@@ -214,7 +243,6 @@ class SwiftTwitchAPITests: XCTestCase {
                 XCTFail(error.localizedDescription)
             }
         }
-        
         wait(for: [expectation], timeout: 30.0)
     }
 }
