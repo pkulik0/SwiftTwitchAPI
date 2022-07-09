@@ -165,32 +165,41 @@ class SwiftTwitchAPITests: XCTestCase {
     }
     
     func testChannelRewards() throws {
-        let expectation = XCTestExpectation(description: "api")
-        api.createChannelReward(broadcasterID: testerID, title: "TestReward", cost: 999) { result in
+        let expectation = XCTestExpectation(description: "createReward")
+        
+        var rewardID: String?
+        let rewardTitle = "test" + UUID().uuidString
+        api.createChannelReward(broadcasterID: testerID, title: rewardTitle, cost: 999) { result in
+            expectation.fulfill()
             switch(result) {
             case .success(let response):
-                if let reward = response.data.first {
-                    self.api.removeChannelReward(broadcasterID: self.testerID, rewardID: reward.id) { result in
-                        switch(result) {
-                        case .success(let statusCode):
-                            XCTAssert(statusCode == 204)
-                        case .failure(.serverError(error: let error)):
-                            XCTFail(error.message)
-                        case .failure(let error):
-                            XCTFail(error.localizedDescription)
-                        }
-                        expectation.fulfill()
-                    }
-                } else {
-                    XCTFail("No reward returned.")
-                }
+                rewardID = response.data.first?.id
             case .failure(.serverError(error: let error)):
                 XCTFail(error.message)
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
         }
-        
         wait(for: [expectation], timeout: 30.0)
+        
+        guard let rewardID = rewardID else {
+            XCTFail("No reward was returned.")
+            return
+        }
+        
+        let expectation2 = XCTestExpectation(description: "removeReward")
+        api.removeChannelReward(broadcasterID: testerID, rewardID: rewardID) { result in
+            switch(result) {
+            case .success(let statusCode):
+                XCTAssert(statusCode == 204)
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation2.fulfill()
+        }
+        
+        wait(for: [expectation2], timeout: 30.0)
     }
 }

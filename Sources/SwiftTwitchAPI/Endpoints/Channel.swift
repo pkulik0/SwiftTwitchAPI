@@ -86,75 +86,77 @@ extension SwiftTwitchAPI {
         let title: String
         let prompt: String
         let cost: Int
-        let backgroundColor: String
-        let isEnabled: Bool
-        let isUserInputRequired: Bool
-        let isPaused: Bool
-        let isInStock: Bool
-        let shouldSkipQueue: Bool
-        let redemptionsDuringCurrentStream: Int?
-        let cooldownExpiryTimestamp: String?
-        
-        struct Image: Codable {
-            let url_1x: String
-            let url_2x: String
-            let url_3x: String
-        }
-        
         let image: Image?
         let defaultImage: Image
-        
-        struct PerStreamLimit: Codable {
-            let isEnabled: Bool
-            let limit: Int
-            
-            enum CodingKeys: String, CodingKey {
-                case isEnabled = "is_enabled"
-                case limit = "max_per_stream"
-            }
-        }
-        
-        struct PerUserPerStreamLimit: Codable {
-            let isEnabled: Bool
-            let limit: Int
-            
-            enum CodingKeys: String, CodingKey {
-                case isEnabled = "is_enabled"
-                case limit = "max_per_user_per_stream"
-            }
-        }
-        
-        struct GlobalCooldown: Codable {
-            let isEnabled: Bool
-            let seconds: Int
-            
-            enum CodingKeys: String, CodingKey {
-                case isEnabled = "is_enabled"
-                case seconds = "global_cooldown_seconds"
-            }
-        }
-        
-        let maxPerStreamSettings: PerStreamLimit
-        let maxPerUserPerStreamSettigs: PerUserPerStreamLimit
-        let globalCooldownSettings: GlobalCooldown
-        
+        let backgroundColor: String
+        let isEnabled: Bool
+        let isPaused: Bool
+        let isInStock: Bool
+        let isUserInputRequired: Bool
+        let maxPerStreamSetting: MaxPerStreamSetting
+        let maxPerUserPerStreamSetting: MaxPerUserPerStreamSetting
+        let globalCooldownSetting: GlobalCooldownSetting
+        let shouldRedemptionsSkipRequestQueue: Bool
+        let redemptionsRedeemedCurrentStream: Int?
+        let cooldownExpiresAt: String?
+
         enum CodingKeys: String, CodingKey {
-            case id, title, prompt, image, cost
+            case id, title, cost, prompt, image
             case broadcasterName = "broadcaster_name"
             case broadcasterLogin = "broadcaster_login"
             case broadcasterID = "broadcaster_id"
-            case defaultImage = "default_image"
             case backgroundColor = "background_color"
             case isEnabled = "is_enabled"
             case isUserInputRequired = "is_user_input_required"
+            case maxPerStreamSetting = "max_per_stream_setting"
+            case maxPerUserPerStreamSetting = "max_per_user_per_stream_setting"
+            case globalCooldownSetting = "global_cooldown_setting"
             case isPaused = "is_paused"
             case isInStock = "is_in_stock"
-            case shouldSkipQueue = "should_redemptions_skip_request_queue"
-            case redemptionsDuringCurrentStream = "redemptions_redeemed_current_stream"
-            case cooldownExpiryTimestamp = "cooldown_expires_at"
-            case maxPerStreamSettings = "max_per_stream_setting"
-            case maxPerUserPerStreamSettigs = "max_per_user_per_stream_setting"
-            case globalCooldownSettings = "global_cooldown_setting"
+            case defaultImage = "default_image"
+            case shouldRedemptionsSkipRequestQueue = "should_redemptions_skip_request_queue"
+            case redemptionsRedeemedCurrentStream = "redemptions_redeemed_current_stream"
+            case cooldownExpiresAt = "cooldown_expires_at"
+        }
+        
+        struct Image: Codable {
+            let url1X, url2X, url4X: String
+
+            enum CodingKeys: String, CodingKey {
+                case url1X = "url_1x"
+                case url2X = "url_2x"
+                case url4X = "url_4x"
+            }
+        }
+
+        struct GlobalCooldownSetting: Codable {
+            let isEnabled: Bool
+            let globalCooldownSeconds: Int
+
+            enum CodingKeys: String, CodingKey {
+                case isEnabled = "is_enabled"
+                case globalCooldownSeconds = "global_cooldown_seconds"
+            }
+        }
+
+        struct MaxPerStreamSetting: Codable {
+            let isEnabled: Bool
+            let maxPerStream: Int
+
+            enum CodingKeys: String, CodingKey {
+                case isEnabled = "is_enabled"
+                case maxPerStream = "max_per_stream"
+            }
+        }
+
+        struct MaxPerUserPerStreamSetting: Codable {
+            let isEnabled: Bool
+            let maxPerUserPerStream: Int
+
+            enum CodingKeys: String, CodingKey {
+                case isEnabled = "is_enabled"
+                case maxPerUserPerStream = "max_per_user_per_stream"
+            }
         }
     }
     
@@ -195,6 +197,6 @@ extension SwiftTwitchAPI {
     }
     
     func removeChannelReward(broadcasterID: String, rewardID: String, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "channel_points/custom_rewards", onCompletion: onCompletion)
+        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .DELETE, onCompletion: onCompletion)
     }
 }
