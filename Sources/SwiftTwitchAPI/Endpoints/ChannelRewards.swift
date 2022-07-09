@@ -46,16 +46,6 @@ extension SwiftTwitchAPI {
             case redemptionsRedeemedCurrentStream = "redemptions_redeemed_current_stream"
             case cooldownExpiresAt = "cooldown_expires_at"
         }
-        
-        struct Image: Codable {
-            let url1X, url2X, url4X: String
-
-            enum CodingKeys: String, CodingKey {
-                case url1X = "url_1x"
-                case url2X = "url_2x"
-                case url4X = "url_4x"
-            }
-        }
 
         struct GlobalCooldownSetting: Codable {
             let isEnabled: Bool
@@ -196,17 +186,14 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionID: [String]? = nil, status: ChannelRewardRedemptionResponse.Status? = nil, sort: ChannelRewardRedemptionResponse.SortType? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
-        if status == nil && redemptionID == nil {
+    func getChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionIDs: [String]? = nil, status: ChannelRewardRedemptionResponse.Status? = nil, sort: ChannelRewardRedemptionResponse.SortType? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
+        if status == nil && redemptionIDs == nil {
             onCompletion(.failure(.tooFewParameters))
             return
         }
         
         var parameters: [String: String] = [:]
         
-        if let redemptionID = redemptionID {
-            parameters["id"] = redemptionID.joined(separator: ",")
-        }
         if let status = status {
             parameters["status"] = status.rawValue
         }
@@ -223,15 +210,23 @@ extension SwiftTwitchAPI {
         parameters["broadcaster_id"] = broadcasterID
         parameters["reward_id"] = rewardID
         
-        let endpoint = appendParameters(parameters, to: "channel_points/custom_rewards/redemptions")
+        var endpoint = appendParameters(parameters, to: "channel_points/custom_rewards/redemptions")
+        if let redemptionIDs = redemptionIDs {
+            for redemptionID in redemptionIDs {
+                endpoint += "&id=\(redemptionID)"
+            }
+        }
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func updateChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionID: [String], status: ChannelRewardRedemptionResponse.Status, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
+    func updateChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionIDs: [String], status: ChannelRewardRedemptionResponse.Status, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
         var requestBody: [String: Any] = [:]
         requestBody["status"] = status
         
-        let ids = redemptionID.joined(separator: ",")
-        requestAPI(endpoint: "channel_points/custom_rewards/redemptions?broadcaster_id=\(broadcasterID)&reward_id=\(rewardID)&id=\(ids)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        var endpoint = "channel_points/custom_rewards/redemptions?broadcaster_id=\(broadcasterID)&reward_id=\(rewardID)"
+        for redemptionID in redemptionIDs {
+            endpoint += "&id=\(redemptionID)"
+        }
+        requestAPI(endpoint: endpoint, requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
 }

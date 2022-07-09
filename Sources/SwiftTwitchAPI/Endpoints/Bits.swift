@@ -61,10 +61,10 @@ extension SwiftTwitchAPI {
             }
 
             struct Images: Codable {
-                let light: Image
-                let dark: Image
+                let light: ImageData
+                let dark: ImageData
     
-                struct Image: Codable {
+                struct ImageData: Codable {
                     let animatedSizes: Size
                     let staticSizes: Size
 
