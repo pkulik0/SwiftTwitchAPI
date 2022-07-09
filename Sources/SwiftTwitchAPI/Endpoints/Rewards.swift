@@ -1,5 +1,5 @@
 //
-//  ChannelRewards.swift
+//  Rewards.swift
 //  
 //
 //  Created by pkulik0 on 09/07/2022.
