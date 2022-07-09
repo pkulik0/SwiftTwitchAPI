@@ -9,6 +9,7 @@ class SwiftTwitchAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "api")
         
         api.getChannel(broadcasterIDs: [testerID]) { result in
+            expectation.fulfill()
             switch(result) {
             case .success(let channels):
                 XCTAssertFalse(channels.data.isEmpty)
@@ -17,7 +18,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 30.0)
     }
@@ -26,6 +26,7 @@ class SwiftTwitchAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "api")
     
         api.getTopGames { result in
+            expectation.fulfill()
             switch(result) {
             case .success(let paginatedGames):
                 XCTAssert(paginatedGames.pagination?.cursor != nil)
@@ -34,7 +35,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 30.0)
     }
@@ -43,6 +43,7 @@ class SwiftTwitchAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "api")
         
         api.runCommercial(broadcasterID: testerID, length: 60) { result in
+            expectation.fulfill()
             switch(result) {
             case .success(let commercialResponse):
                 XCTAssert(commercialResponse.data.first != nil)
@@ -51,7 +52,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         wait(for: [expectation], timeout: 30.0)
     }
@@ -60,6 +60,7 @@ class SwiftTwitchAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "api")
         
         api.getExtensionsAnalytics { result in
+            expectation.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -68,7 +69,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         
         wait(for: [expectation], timeout: 30.0)
@@ -78,6 +78,7 @@ class SwiftTwitchAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "api")
         
         api.getGamesAnalytics { result in
+            expectation.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -86,7 +87,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         
         wait(for: [expectation], timeout: 30.0)
@@ -95,7 +95,8 @@ class SwiftTwitchAPITests: XCTestCase {
     func testBitsLeaderboard() throws {
         let expectation = XCTestExpectation(description: "api")
         
-        api.getBitsLeaderboard(userID: "109027939") { result in
+        api.getBitsLeaderboard(userID: testerID) { result in
+            expectation.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -104,7 +105,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         
         wait(for: [expectation], timeout: 30.0)
@@ -114,6 +114,7 @@ class SwiftTwitchAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "api")
         
         api.getBitsCheermotes { result in
+            expectation.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -122,7 +123,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         
         wait(for: [expectation], timeout: 30.0)
@@ -132,6 +132,7 @@ class SwiftTwitchAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "api")
         
         api.modifyChannel(broadcasterID: testerID, title: "title \(Int.random(in: 0...100))") { result in
+            expectation.fulfill()
             switch(result) {
             case .success(let statusCode):
                 XCTAssert(statusCode == 204)
@@ -140,7 +141,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         
         wait(for: [expectation], timeout: 30.0)
@@ -150,6 +150,7 @@ class SwiftTwitchAPITests: XCTestCase {
         let expectation = XCTestExpectation(description: "api")
         
         api.getChannelEditors(broadcasterID: testerID) { result in
+            expectation.fulfill()
             switch(result) {
             case .success(_):
                 break
@@ -158,7 +159,6 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
         }
         
         wait(for: [expectation], timeout: 30.0)
