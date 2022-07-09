@@ -13,6 +13,7 @@ public struct SwiftTwitchAPI {
         case GET = "GET"
         case POST = "POST"
         case PATCH = "PATCH"
+        case DELETE = "DELETE"
     }
     
     internal func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
@@ -97,7 +98,7 @@ public struct SwiftTwitchAPI {
                 onCompletion(.failure(.serverError(error: response)))
                 return
             }
-            onCompletion(.failure(.invalidResponse))
+            onCompletion(.failure(.unknownData))
         }.resume()
     }
 }

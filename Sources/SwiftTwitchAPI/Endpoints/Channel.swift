@@ -79,9 +79,9 @@ extension SwiftTwitchAPI {
     }
     
     struct ChannelRewardResponse: Codable {
-        let broadcasterID: String
-        let broadcasterLogin: String
         let broadcasterName: String
+        let broadcasterLogin: String
+        let broadcasterID: String
         let id: String
         let title: String
         let prompt: String
@@ -104,45 +104,45 @@ extension SwiftTwitchAPI {
         let image: Image?
         let defaultImage: Image
         
-        struct PerStreamCooldown: Codable {
+        struct PerStreamLimit: Codable {
             let isEnabled: Bool
-            let length: Int
+            let limit: Int
             
             enum CodingKeys: String, CodingKey {
                 case isEnabled = "is_enabled"
-                case length = "max_per_stream"
+                case limit = "max_per_stream"
             }
         }
         
-        struct PerUserPerStreamCooldown: Codable {
+        struct PerUserPerStreamLimit: Codable {
             let isEnabled: Bool
-            let length: Int
+            let limit: Int
             
             enum CodingKeys: String, CodingKey {
                 case isEnabled = "is_enabled"
-                case length = "max_per_user_per_stream"
+                case limit = "max_per_user_per_stream"
             }
         }
         
         struct GlobalCooldown: Codable {
             let isEnabled: Bool
-            let length: Int
+            let seconds: Int
             
             enum CodingKeys: String, CodingKey {
                 case isEnabled = "is_enabled"
-                case length = "global_cooldown_seconds"
+                case seconds = "global_cooldown_seconds"
             }
         }
         
-        let maxPerStreamSettings: PerStreamCooldown
-        let maxPerUserPerStreamSettigs: PerUserPerStreamCooldown
+        let maxPerStreamSettings: PerStreamLimit
+        let maxPerUserPerStreamSettigs: PerUserPerStreamLimit
         let globalCooldownSettings: GlobalCooldown
         
         enum CodingKeys: String, CodingKey {
             case id, title, prompt, image, cost
-            case broadcasterID = "broadcaster_id"
-            case broadcasterLogin = "broadcaster_login"
             case broadcasterName = "broadcaster_name"
+            case broadcasterLogin = "broadcaster_login"
+            case broadcasterID = "broadcaster_id"
             case defaultImage = "default_image"
             case backgroundColor = "background_color"
             case isEnabled = "is_enabled"
@@ -158,7 +158,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String?, isEnabled: Bool?, backgroundColor: String?, isUserInputRequired: Bool?, isMaxPerStreamEnabled: Bool?, maxPerStream: Int?, isMaxPerUserPerStreamEnabled: Bool?, maxPerUserPerStream: Int?, isGlobalCooldownEnabled: Bool?, globalCooldown: Int?, shouldSkipQueue: Bool?, onCompletion: @escaping (Result<Paginated<[ChannelRewardResponse]>, TwitchAPIError>) -> Void) {
+    func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<[ChannelRewardResponse]>, TwitchAPIError>) -> Void) {
         var requestBody: [String: Any] = [:]
         requestBody["title"] = title
         requestBody["cost"] = cost
@@ -192,5 +192,9 @@ extension SwiftTwitchAPI {
         }
         
         requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
+    }
+    
+    func removeChannelReward(broadcasterID: String, rewardID: String, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+        requestAPI(endpoint: "channel_points/custom_rewards", onCompletion: onCompletion)
     }
 }

@@ -163,4 +163,34 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation], timeout: 30.0)
     }
+    
+    func testChannelRewards() throws {
+        let expectation = XCTestExpectation(description: "api")
+        api.createChannelReward(broadcasterID: testerID, title: "TestReward", cost: 999) { result in
+            switch(result) {
+            case .success(let response):
+                if let reward = response.data.first {
+                    self.api.removeChannelReward(broadcasterID: self.testerID, rewardID: reward.id) { result in
+                        switch(result) {
+                        case .success(let statusCode):
+                            XCTAssert(statusCode == 204)
+                        case .failure(.serverError(error: let error)):
+                            XCTFail(error.message)
+                        case .failure(let error):
+                            XCTFail(error.localizedDescription)
+                        }
+                        expectation.fulfill()
+                    }
+                } else {
+                    XCTFail("No reward returned.")
+                }
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        wait(for: [expectation], timeout: 30.0)
+    }
 }

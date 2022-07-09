@@ -13,6 +13,6 @@ extension SwiftTwitchAPI {
     }
 
     enum TwitchAPIError: Error {
-        case missingToken, invalidResponse, serverError(error: ErrorResponse), tooFewParameters
+        case missingToken, invalidResponse, unknownData, serverError(error: ErrorResponse), tooFewParameters
     }
 }
