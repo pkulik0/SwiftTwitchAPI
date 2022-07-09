@@ -268,7 +268,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionID: String? = nil, status: ChannelRewardRedemptionResponse.Status? = nil, sort: ChannelRewardRedemptionResponse.SortType? = nil, after: String? = nil, first: Int? = nil,  onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
+    func getChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionID: [String]? = nil, status: ChannelRewardRedemptionResponse.Status? = nil, sort: ChannelRewardRedemptionResponse.SortType? = nil, after: String? = nil, first: Int? = nil,  onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
         if status == nil && redemptionID == nil {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -277,7 +277,7 @@ extension SwiftTwitchAPI {
         var parameters: [String: String] = [:]
         
         if let redemptionID = redemptionID {
-            parameters["redemption_id"] = redemptionID
+            parameters["redemption_id"] = redemptionID.joined(separator: ",")
         }
         if let status = status {
             parameters["status"] = status.rawValue
