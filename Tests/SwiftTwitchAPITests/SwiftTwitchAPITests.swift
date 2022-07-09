@@ -326,4 +326,52 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation1, expectation2], timeout: 30.0)
     }
+    
+    func testChatSettings() throws {
+        let expectation1 = XCTestExpectation(description: "getChatSettingsAsMod")
+        let expectation2 = XCTestExpectation(description: "getChatSettings")
+        let expectation3 = XCTestExpectation(description: "setChatSettings")
+
+        api.getChatSettings(broadcasterID: testerID, moderatorID: testerID) { result in
+            expectation1.fulfill()
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        api.getChatSettings(broadcasterID: testerID) { result in
+            expectation2.fulfill()
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        api.updateChatSettings(broadcasterID: testerID, moderatorID: testerID, isInEmoteMode: true) { result in
+            expectation3.fulfill()
+            switch(result) {
+            case .success(let response):
+                guard let isInEmoteMode = response.data.first?.isInEmoteMode else {
+                    XCTFail("Invalid response")
+                    return
+                }
+                XCTAssert(isInEmoteMode)
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        wait(for: [expectation1, expectation2, expectation3], timeout: 30.0)
+    }
 }
