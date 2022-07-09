@@ -296,4 +296,34 @@ class SwiftTwitchAPITests: XCTestCase {
         }
         wait(for: [expectation3], timeout: 30.0)
     }
+    
+    func testGetBadges() throws {
+        let expectation1 = XCTestExpectation(description: "getChannelBadges")
+        let expectation2 = XCTestExpectation(description: "getGlobalBadges")
+        
+        api.getChannelBadges(broadcasterID: testerID) { result in
+            expectation1.fulfill()
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        api.getGlobalBadges { result in
+            expectation2.fulfill()
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        wait(for: [expectation1, expectation2], timeout: 30.0)
+    }
 }
