@@ -165,7 +165,7 @@ class SwiftTwitchAPITests: XCTestCase {
     }
     
     func testChannelRewards() throws {
-        let expectation = XCTestExpectation(description: "createReward")
+        var expectation = XCTestExpectation(description: "createReward")
         
         var rewardID: String?
         let rewardTitle = "test" + UUID().uuidString
@@ -187,8 +187,24 @@ class SwiftTwitchAPITests: XCTestCase {
             return
         }
         
-        let expectation2 = XCTestExpectation(description: "removeReward")
+        expectation = XCTestExpectation(description: "getRewards")
+        api.getChannelRewards(broadcasterID: testerID) { result in
+            expectation.fulfill()
+            switch(result) {
+            case .success(let result):
+                XCTAssert(result.data.contains(where: { $0.id == rewardID }))
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        wait(for: [expectation], timeout: 30.0)
+        
+        expectation = XCTestExpectation(description: "removeReward")
         api.removeChannelReward(broadcasterID: testerID, rewardID: rewardID) { result in
+            expectation.fulfill()
             switch(result) {
             case .success(let statusCode):
                 XCTAssert(statusCode == 204)
@@ -197,9 +213,8 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation2.fulfill()
         }
         
-        wait(for: [expectation2], timeout: 30.0)
+        wait(for: [expectation], timeout: 30.0)
     }
 }
