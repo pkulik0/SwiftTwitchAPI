@@ -381,4 +381,21 @@ class SwiftTwitchAPITests: XCTestCase {
         }
         wait(for: [expectation], timeout: 30.0)
     }
+    
+    func testGetChatColor() throws {
+        let expectation = XCTestExpectation(description: "chatAnnouncement")
+
+        api.getChatColor(userIDs: [testerID]) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 30.0)
+    }
 }

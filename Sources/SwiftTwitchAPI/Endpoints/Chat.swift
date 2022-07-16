@@ -93,4 +93,31 @@ extension SwiftTwitchAPI {
 
         requestAPI(endpoint: "chat/announcements?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
     }
+    
+    struct ChatColorResponse: Codable {
+        let userID: String
+        let userName: String
+        let userLogin: String
+        let color: String
+
+        enum CodingKeys: String, CodingKey {
+            case userID = "user_id"
+            case userName = "user_name"
+            case userLogin = "user_login"
+            case color
+        }
+    }
+
+
+    func getChatColor(userIDs: [String], onCompletion: @escaping (Result<Paginated<ChatColorResponse>,TwitchAPIError>) -> Void) {
+        if userIDs.isEmpty {
+            onCompletion(.failure(.tooFewParameters))
+            return
+        }
+        
+        var endpoint = "chat/color?"
+        userIDs.forEach({ endpoint.append("user_id=\($0)&") })
+        
+        requestAPI(endpoint: endpoint, requestMethod: .GET, onCompletion: onCompletion)
+    }
 }
