@@ -48,10 +48,6 @@ public struct SwiftTwitchAPI {
                 return
             }
             
-            if let data = data, let json = data.JSONString {
-                print(json)
-            }
-            
             if let response = response as? HTTPURLResponse {
                 let statusCode = response.statusCode
 
@@ -59,7 +55,14 @@ public struct SwiftTwitchAPI {
                     onCompletion(.success(statusCode))
                 } else if statusCode == 401 {
                     onCompletion(.failure(.unauthorized))
+                } else {
+                    onCompletion(.failure(.unknownData))
                 }
+                return
+            }
+            
+            if let data = data, let json = data.JSONString {
+                print(json)
             }
             onCompletion(.failure(.invalidResponse))
         }.resume()
@@ -91,10 +94,6 @@ public struct SwiftTwitchAPI {
                 return
             }
             
-            if let json = data.JSONString {
-                print(json)
-            }
-            
             if let response = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
                 onCompletion(.failure(.serverError(error: response)))
                 return
@@ -105,6 +104,9 @@ public struct SwiftTwitchAPI {
                 return
             }
             
+            if let json = data.JSONString {
+                print(json)
+            }
             onCompletion(.failure(.unknownData))
         }.resume()
     }
