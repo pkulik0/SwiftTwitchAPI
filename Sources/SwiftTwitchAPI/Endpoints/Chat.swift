@@ -120,4 +120,21 @@ extension SwiftTwitchAPI {
         
         requestAPI(endpoint: endpoint, requestMethod: .GET, onCompletion: onCompletion)
     }
+    
+    enum ChatColor: String, Codable {
+        case blue, chocolate, coral, firebrick, green, red
+        case blueViolet = "blue_violet"
+        case cadetBlue = "cadet_blue"
+        case dodgerBlue = "dodger_blue"
+        case goldenRod = "golden_rod"
+        case hotPink = "hot_pink"
+        case orangeRed = "orange_red"
+        case seaGreen = "sea_green"
+        case springGreen = "spring_green"
+        case yellowGreen = "yellow_green"
+    }
+    
+    func updateChatColor(userID: String, color: ChatColor, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+        requestAPI(endpoint: "chat/color?user_id=\(userID)&color=\(color.rawValue)", requestMethod: .PUT, onCompletion: onCompletion)
+    }
 }
