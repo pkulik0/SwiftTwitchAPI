@@ -56,37 +56,6 @@ class SwiftTwitchAPITests: XCTestCase {
         wait(for: [expectation], timeout: 30.0)
     }
     
-    func testAnalytics() throws {
-        let expectation1 = XCTestExpectation(description: "extensionsAnalytics")
-        let expectation2 = XCTestExpectation(description: "gameAnalytics")
-        
-        api.getExtensionsAnalytics { result in
-            expectation1.fulfill()
-            switch(result) {
-            case .success(_):
-                break
-            case .failure(.serverError(error: let error)):
-                XCTFail(error.message)
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-        }
-        
-        api.getGamesAnalytics { result in
-            expectation2.fulfill()
-            switch(result) {
-            case .success(_):
-                break
-            case .failure(.serverError(error: let error)):
-                XCTFail(error.message)
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-        }
-        
-        wait(for: [expectation1, expectation2], timeout: 30.0)
-    }
-    
     func testBits() throws {
         let expectation1 = XCTestExpectation(description: "bitsLeaderboard")
         let expectation2 = XCTestExpectation(description: "bitsCheermotes")
@@ -443,24 +412,5 @@ class SwiftTwitchAPITests: XCTestCase {
         }
         
         wait(for: [expectation0, expectation1], timeout: 30.0)
-    }
-    
-    func testCodeStatus() throws {
-        let expectation = XCTestExpectation(description: "getCodeStatus")
-
-        api.getCodeStatus(userID: testerID, codes: ["fakeCode"]) { result in
-            switch(result) {
-            case .success(let result):
-                let codeStatus = result.data.first?.status
-                print(codeStatus!.rawValue)
-                XCTAssert(codeStatus == .notFound)
-            case .failure(.serverError(error: let error)):
-                XCTFail(error.message)
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 30.0)
     }
 }
