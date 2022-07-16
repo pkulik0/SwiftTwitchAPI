@@ -413,4 +413,35 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation], timeout: 30.0)
     }
+    
+    func testClips() throws {
+        let expectation0 = XCTestExpectation(description: "createClip")
+        let expectation1 = XCTestExpectation(description: "getClips")
+    
+        api.createClip(broadcasterID: testerID) { result in
+            switch(result) {
+            case .success(let result):
+                XCTAssert(result.data.first?.id != nil)
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation0.fulfill()
+        }
+        
+        api.getClips(broadcasterID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+        
+        wait(for: [expectation0, expectation1], timeout: 30.0)
+    }
 }
