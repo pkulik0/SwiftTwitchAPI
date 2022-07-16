@@ -81,4 +81,31 @@ extension SwiftTwitchAPI {
     func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelEditorResponse>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "channels/editors?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
+    
+    struct CreatorGoalResponse: Codable {
+        let id: String
+        let broadcasterID: String
+        let broadcasterName: String
+        let broadcasterLogin: String
+        let type: String
+        let welcomeDescription: String
+        let currentAmount: Int
+        let targetAmount: Int
+        let createdAt: String
+
+        enum CodingKeys: String, CodingKey {
+            case id, type
+            case broadcasterID = "broadcaster_id"
+            case broadcasterName = "broadcaster_name"
+            case broadcasterLogin = "broadcaster_login"
+            case welcomeDescription = "description"
+            case currentAmount = "current_amount"
+            case targetAmount = "target_amount"
+            case createdAt = "created_at"
+        }
+    }
+    
+    func getCreatorGoals(broadcasterID: String, onCompletion: @escaping (Result<Paginated<CreatorGoalResponse>, TwitchAPIError>) -> Void) {
+        requestAPI(endpoint: "goals?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+    }
 }
