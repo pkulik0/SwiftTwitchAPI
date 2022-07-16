@@ -56,9 +56,10 @@ class SwiftTwitchAPITests: XCTestCase {
         wait(for: [expectation], timeout: 30.0)
     }
     
-    func testGetGames() throws {
+    func testGames() throws {
         let expectation0 = XCTestExpectation(description: "getTopGames")
         let expectation1 = XCTestExpectation(description: "getGames")
+        let expectation2 = XCTestExpectation(description: "findCategories")
     
         api.getTopGames { result in
             switch(result) {
@@ -82,8 +83,19 @@ class SwiftTwitchAPITests: XCTestCase {
             }
             expectation1.fulfill()
         }
+        api.findCategories(query: "c") { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation2.fulfill()
+        }
         
-        wait(for: [expectation0, expectation1], timeout: 30.0)
+        wait(for: [expectation0, expectation1, expectation2], timeout: 30.0)
     }
 
     func testRunCommercial() throws {

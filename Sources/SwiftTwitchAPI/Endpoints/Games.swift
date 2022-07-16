@@ -47,4 +47,23 @@ extension SwiftTwitchAPI {
         
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
+    
+    func findCategories(query: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<GameResponse>, TwitchAPIError>) -> Void) {
+        let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        guard let encodedQuery = encodedQuery else {
+            onCompletion(.failure(.invalidRequest))
+            return
+        }
+
+        var parameters: [String: String] = [:]
+        
+        if let after = after {
+            parameters["after"] = after
+        }
+        if let first = first {
+            parameters["first"] = String(first)
+        }
+        
+        requestAPI(endpoint: "search/categories?query=\(encodedQuery)", onCompletion: onCompletion)
+    }
 }
