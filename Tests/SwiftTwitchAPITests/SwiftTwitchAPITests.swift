@@ -489,4 +489,21 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation0, expectation1], timeout: 30.0)
     }
+    
+    func testGetStreams() throws {
+        let expectation = XCTestExpectation(description: "getStreams")
+
+        api.getStreams(languages: ["en"]) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail("\(error.status) \(error.error) \(error.message)")
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 30.0)
+    }
 }
