@@ -560,4 +560,34 @@ class SwiftTwitchAPITests: XCTestCase {
         }
         wait(for: [expectation0, expectation1, expectation2], timeout: 30.0)
     }
+    
+    func testTeams() throws {
+        let expectation0 = XCTestExpectation(description: "getChannelTeams")
+        let expectation1 = XCTestExpectation(description: "getTeamInfo")
+        
+        api.getChannelTeams(broadcasterID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation0.fulfill()
+        }
+        api.getTeamInformation(name: "esl") { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+
+        wait(for: [expectation0, expectation1], timeout: 30.0)
+    }
 }
