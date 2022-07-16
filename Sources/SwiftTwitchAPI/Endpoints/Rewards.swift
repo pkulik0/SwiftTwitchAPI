@@ -220,13 +220,17 @@ extension SwiftTwitchAPI {
     }
     
     func updateChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionIDs: [String], status: ChannelRewardRedemptionResponse.Status, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
+        if redemptionIDs.isEmpty {
+            onCompletion(.failure(.tooFewParameters))
+            return
+        }
+        
         var requestBody: [String: Any] = [:]
         requestBody["status"] = status
         
         var endpoint = "channel_points/custom_rewards/redemptions?broadcaster_id=\(broadcasterID)&reward_id=\(rewardID)"
-        for redemptionID in redemptionIDs {
-            endpoint += "&id=\(redemptionID)"
-        }
+        redemptionIDs.forEach({ endpoint.append("id=\($0)&") })
+
         requestAPI(endpoint: endpoint, requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
 }

@@ -34,10 +34,14 @@ extension SwiftTwitchAPI {
     }
     
     func getEmoteSets(emoteSetIDs: [String], onCompletion: @escaping (Result<Paginated<EmotesResponse>, TwitchAPIError>) -> Void) {
-        var endpoint = "chat/emotes/set?"
-        for emoteSetID in emoteSetIDs {
-            endpoint += "emote_set_id=\(emoteSetID)&"
+        if emoteSetIDs.isEmpty {
+            onCompletion(.failure(.tooFewParameters))
+            return
         }
+        
+        var endpoint = "chat/emotes/set?"
+        emoteSetIDs.forEach({ endpoint.append("emote_set_id=\($0)&") })
+        
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

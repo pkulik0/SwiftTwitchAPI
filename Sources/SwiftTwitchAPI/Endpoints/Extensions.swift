@@ -60,7 +60,7 @@ extension SwiftTwitchAPI {
         }
         
         var endpoint = appendParameters(parameters, to: "extensions/transactions")
-        ids.forEach({ endpoint = appendParameters(["id": $0], to: endpoint) })
+        ids.forEach({ endpoint.append("id=\($0)&") })
         
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }

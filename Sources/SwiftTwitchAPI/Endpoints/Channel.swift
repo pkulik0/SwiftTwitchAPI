@@ -31,10 +31,14 @@ extension SwiftTwitchAPI {
     }
     
     func getChannel(broadcasterIDs: [String], onCompletion: @escaping (Result<Paginated<ChannelResponse>, TwitchAPIError>) -> Void) {
-        var endpoint = "channels?"
-        for id in broadcasterIDs {
-            endpoint += "broadcaster_id=\(id)&"
+        if broadcasterIDs.isEmpty {
+            onCompletion(.failure(.tooFewParameters))
+            return
         }
+        
+        var endpoint = "channels?"
+        broadcasterIDs.forEach({ endpoint.append("broadcaster_id=\($0)&") })
+
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 
