@@ -76,6 +76,17 @@ extension SwiftTwitchAPI {
                 case maxPerUserPerStream = "max_per_user_per_stream"
             }
         }
+        
+        struct Image: Codable {
+            let url1X, url2X, url4X: String
+
+            enum CodingKeys: String, CodingKey {
+                case url1X = "url_1x"
+                case url2X = "url_2x"
+                case url4X = "url_4x"
+            }
+        }
+
     }
     
     fileprivate func getChannelRewardRequestBody(title: String?, cost: Int?, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil) -> [String: Any] {

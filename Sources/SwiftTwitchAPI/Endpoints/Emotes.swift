@@ -23,6 +23,17 @@ extension SwiftTwitchAPI {
             case emoteSetID = "emote_set_id"
             case themeMode = "theme_mode"
         }
+        
+        struct Image: Codable {
+            let url1X, url2X, url4X: String
+
+            enum CodingKeys: String, CodingKey {
+                case url1X = "url_1x"
+                case url2X = "url_2x"
+                case url4X = "url_4x"
+            }
+        }
+
     }
     
     func getChannelEmotes(broadcasterID: String, onCompletion: @escaping (Result<Paginated<EmotesResponse>, TwitchAPIError>) -> Void) {
