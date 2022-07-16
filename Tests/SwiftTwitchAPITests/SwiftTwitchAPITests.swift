@@ -2,7 +2,7 @@ import XCTest
 @testable import SwiftTwitchAPI
 
 class SwiftTwitchAPITests: XCTestCase {
-    let api = SwiftTwitchAPI(clientID: "thffseh4mtlmaqnd89rm17ugso8s30", authToken: "bgort9x2teupqmob3m15m0kihqjld3")
+    let api = SwiftTwitchAPI(clientID: "thffseh4mtlmaqnd89rm17ugso8s30", authToken: "s4w51coo44ztna0c9ipqpw3awzkq0e")
     let testerID = "118350674"
     
     func testGetChannels() throws {
@@ -363,5 +363,22 @@ class SwiftTwitchAPITests: XCTestCase {
         }
         
         wait(for: [expectation1, expectation2, expectation3], timeout: 30.0)
+    }
+    
+    func testChatAnnouncement() throws {
+        let expectation = XCTestExpectation(description: "chatAnnouncement")
+
+        api.sendChatAnnouncement(broadcasterID: testerID, moderatorID: testerID, message: "Hello", color: .purple) { result in
+            switch(result) {
+            case .success(let statusCode):
+                XCTAssert(statusCode == 204)
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 30.0)
     }
 }
