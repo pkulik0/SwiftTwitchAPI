@@ -39,6 +39,23 @@ class SwiftTwitchAPITests: XCTestCase {
         wait(for: [expectation], timeout: 30.0)
     }
     
+    func testGetHypetrain() throws {
+        let expectation = XCTestExpectation(description: "getHypetrain")
+        
+        api.getHypetrainInformation(broadcasterID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 30.0)
+    }
+    
     func testGetGames() throws {
         let expectation0 = XCTestExpectation(description: "getTopGames")
         let expectation1 = XCTestExpectation(description: "getGames")
