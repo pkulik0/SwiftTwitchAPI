@@ -9,15 +9,11 @@ public struct SwiftTwitchAPI {
         self.authToken = authToken
     }
 
-    enum RequestMethod: String {
+    internal enum RequestMethod: String {
         case GET, POST, PUT, PATCH, DELETE
     }
-    
-    public func test() {
-        print("ehe")
-    }
-    
-    func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
+
+    internal func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
         let parametersString = parameters.map { (key, value) in
             "\(key)=\(value)"
         }.joined(separator: "&")
@@ -28,7 +24,7 @@ public struct SwiftTwitchAPI {
         return endpoint
     }
     
-    func requestAPI(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+    internal func requestAPI(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
         let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
         
         var request = URLRequest(url: apiURL)
@@ -62,14 +58,11 @@ public struct SwiftTwitchAPI {
                 return
             }
             
-            if let data = data, let json = data.JSONString {
-                print(json)
-            }
             onCompletion(.failure(.invalidResponse))
         }.resume()
     }
     
-    func requestAPI<T: Codable>(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<T, TwitchAPIError>) -> Void) {
+    internal func requestAPI<T: Codable>(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<T, TwitchAPIError>) -> Void) {
         let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
         
         var request = URLRequest(url: apiURL)
@@ -104,21 +97,8 @@ public struct SwiftTwitchAPI {
                 onCompletion(.success(response))
                 return
             }
-            
-            if let json = data.JSONString {
-                print(json)
-            }
+
             onCompletion(.failure(.unknownData))
         }.resume()
-    }
-}
-
-extension Data {
-    var JSONString: NSString? {
-        guard let object = try? JSONSerialization.jsonObject(with: self, options: []),
-              let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]),
-              let prettyPrintedString = NSString(data: data, encoding: String.Encoding.utf8.rawValue) else { return nil }
-
-        return prettyPrintedString
     }
 }
