@@ -12,15 +12,17 @@ class Paginated<WrappedType: Codable>: Codable {
 
     let data: [WrappedType]
     let pagination: PaginationData?
+    let total: Int?
     
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         pagination = try? values.decode(PaginationData.self, forKey: .pagination)
         data = (try? values.decode([WrappedType].self, forKey: .data)) ?? []
+        total = try? values.decode(Int.self, forKey: .total)
     }
     
     enum CodingKeys: String, CodingKey {
-        case data, pagination
+        case data, pagination, total
     }
 }
