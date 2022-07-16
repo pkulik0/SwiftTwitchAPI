@@ -660,4 +660,49 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation0, expectation1], timeout: 30.0)
     }
+    
+    func testBlocklist() throws {
+        let expectation0 = XCTestExpectation(description: "getBlocklist")
+        let expectation1 = XCTestExpectation(description: "blockUser")
+        let expectation2 = XCTestExpectation(description: "unblockUser")
+        
+        api.getUserBlocklist(userID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail("\(error.status) \(error.error) \(error.message)")
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation0.fulfill()
+        }
+        
+        let targetUserID = "52406070"
+        api.addUserToBlocklist(targetUserID: targetUserID) { result in
+            switch(result) {
+            case .success(let statusCode):
+                XCTAssert(statusCode == 204)
+            case .failure(.serverError(error: let error)):
+                XCTFail("\(error.status) \(error.error) \(error.message)")
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+        
+        api.removeUserFromBlocklist(targetUserID: targetUserID) { result in
+            switch(result) {
+            case .success(let statusCode):
+                XCTAssert(statusCode == 204)
+            case .failure(.serverError(error: let error)):
+                XCTFail("\(error.status) \(error.error) \(error.message)")
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation2.fulfill()
+        }
+        
+        wait(for: [expectation0, expectation1, expectation2], timeout: 30.0)
+    }
 }

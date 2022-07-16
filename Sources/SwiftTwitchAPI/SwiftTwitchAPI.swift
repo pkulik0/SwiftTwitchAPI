@@ -19,7 +19,7 @@ public struct SwiftTwitchAPI {
         }.joined(separator: "&")
         
         if !parametersString.isEmpty {
-            return "\(endpoint)?\(parametersString)"
+            return "\(endpoint)\(endpoint.contains("?") ? "&" : "?")\(parametersString)"
         }
         return endpoint
     }
