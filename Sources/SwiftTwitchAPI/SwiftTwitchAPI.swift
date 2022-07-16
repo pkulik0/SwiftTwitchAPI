@@ -10,10 +10,7 @@ public struct SwiftTwitchAPI {
     }
 
     internal enum RequestMethod: String {
-        case GET = "GET"
-        case POST = "POST"
-        case PATCH = "PATCH"
-        case DELETE = "DELETE"
+        case GET, POST, PUT, PATCH, DELETE
     }
     
     internal func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
@@ -56,7 +53,7 @@ public struct SwiftTwitchAPI {
                 } else if statusCode == 401 {
                     onCompletion(.failure(.unauthorized))
                 } else {
-                    onCompletion(.failure(.unknownData))
+                    onCompletion(.failure(.invalidRequest))
                 }
                 return
             }
