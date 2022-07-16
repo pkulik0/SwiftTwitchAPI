@@ -108,4 +108,53 @@ extension SwiftTwitchAPI {
     func getCreatorGoals(broadcasterID: String, onCompletion: @escaping (Result<Paginated<CreatorGoalResponse>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "goals?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
+    
+    struct ChannelSearchResponse: Codable {
+        let broadcasterLanguage: String
+        let broadcasterLogin: String
+        let displayName: String
+        let gameID: String
+        let gameName: String
+        let id: String
+        let isLive: Bool
+        let tagsIDS: [String]?
+        let thumbnailURL: String
+        let title: String
+        let startedAt: String?
+
+        enum CodingKeys: String, CodingKey {
+            case id, title
+            case broadcasterLanguage = "broadcaster_language"
+            case broadcasterLogin = "broadcaster_login"
+            case displayName = "display_name"
+            case gameID = "game_id"
+            case gameName = "game_name"
+            case isLive = "is_live"
+            case tagsIDS = "tags_ids"
+            case thumbnailURL = "thumbnail_url"
+            case startedAt = "started_at"
+        }
+    }
+    
+    func findChannels(query: String, after: String? = nil, first: Int? = nil, showLiveOnly: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelSearchResponse>, TwitchAPIError>) -> Void) {
+        let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        guard let encodedQuery = encodedQuery else {
+            onCompletion(.failure(.invalidRequest))
+            return
+        }
+
+        var parameters: [String: String] = [:]
+        
+        if let after = after {
+            parameters["after"] = after
+        }
+        if let first = first {
+            parameters["first"] = String(first)
+        }
+        if let showLiveOnly = showLiveOnly {
+            parameters["live_only"] = String(showLiveOnly)
+        }
+        
+        requestAPI(endpoint: "search/channels?query=\(encodedQuery)", onCompletion: onCompletion)
+    }
 }
