@@ -629,4 +629,35 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation0, expectation1], timeout: 30.0)
     }
+    
+    func testFollows() throws {
+        let expectation0 = XCTestExpectation(description: "getFollowsFromID")
+        let expectation1 = XCTestExpectation(description: "getFollowsToID")
+        
+        api.getFollowsFromUser(userID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail("\(error.status) \(error.error) \(error.message)")
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation0.fulfill()
+        }
+        
+        api.getFollowsToUser(userID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail("\(error.status) \(error.error) \(error.message)")
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+        
+        wait(for: [expectation0, expectation1], timeout: 30.0)
+    }
 }

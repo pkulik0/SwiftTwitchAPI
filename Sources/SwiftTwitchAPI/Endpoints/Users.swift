@@ -42,4 +42,50 @@ extension SwiftTwitchAPI {
     func updateCurrentUser(description: String, onCompletion: @escaping (Result<Paginated<UserResponse>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "users?description=\(description)", onCompletion: onCompletion)
     }
+    
+    struct FollowResponse: Codable {
+        let fromID: String
+        let fromLogin: String
+        let fromName: String
+        let toID: String
+        let toName: String
+        let followedAt: String
+
+        enum CodingKeys: String, CodingKey {
+            case fromID = "from_id"
+            case fromLogin = "from_login"
+            case fromName = "from_name"
+            case toID = "to_id"
+            case toName = "to_name"
+            case followedAt = "followed_at"
+        }
+    }
+    
+    func getFollowsFromUser(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<FollowResponse>, TwitchAPIError>) -> Void) {
+        var parameters: [String: String] = [:]
+        let endpoint = "users/follows?from_id=\(userID)&"
+        
+        if let after = after {
+            parameters["after"] = after
+        }
+        if let first = first {
+            parameters["first"] = String(first)
+        }
+        
+        requestAPI(endpoint: appendParameters(parameters, to: endpoint), onCompletion: onCompletion)
+    }
+    
+    func getFollowsToUser(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<FollowResponse>, TwitchAPIError>) -> Void) {
+        var parameters: [String: String] = [:]
+        let endpoint = "users/follows?to_id=\(userID)&"
+        
+        if let after = after {
+            parameters["after"] = after
+        }
+        if let first = first {
+            parameters["first"] = String(first)
+        }
+        
+        requestAPI(endpoint: appendParameters(parameters, to: endpoint), onCompletion: onCompletion)
+    }
 }
