@@ -48,12 +48,18 @@ public struct SwiftTwitchAPI {
                 return
             }
             
+            if let data = data, let json = data.JSONString {
+                print(json)
+            }
+            
             if let response = response as? HTTPURLResponse {
                 let statusCode = response.statusCode
+
                 if statusCode == 204 {
                     onCompletion(.success(statusCode))
+                } else if statusCode == 401 {
+                    onCompletion(.failure(.unauthorized))
                 }
-                return
             }
             onCompletion(.failure(.invalidResponse))
         }.resume()
