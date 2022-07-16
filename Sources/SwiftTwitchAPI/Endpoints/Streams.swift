@@ -59,4 +59,17 @@ extension SwiftTwitchAPI {
         
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
+    
+    func getFollowedStreams(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<StreamResponse>, TwitchAPIError>) -> Void) {
+        var parameters: [String: String] = [:]
+        
+        if let after = after {
+            parameters["after"] = after
+        }
+        if let first = first {
+            parameters["first"] = String(first)
+        }
+        
+        requestAPI(endpoint: "streams/followed?user_id=\(userID)", onCompletion: onCompletion)
+    }
 }

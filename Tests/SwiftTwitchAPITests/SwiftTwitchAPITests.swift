@@ -491,7 +491,8 @@ class SwiftTwitchAPITests: XCTestCase {
     }
     
     func testGetStreams() throws {
-        let expectation = XCTestExpectation(description: "getStreams")
+        let expectation0 = XCTestExpectation(description: "getStreams")
+        let expectation1 = XCTestExpectation(description: "getFollowedStreams")
 
         api.getStreams(languages: ["en"]) { result in
             switch(result) {
@@ -502,8 +503,20 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
+            expectation0.fulfill()
         }
-        wait(for: [expectation], timeout: 30.0)
+        api.getFollowedStreams(userID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail("\(error.status) \(error.error) \(error.message)")
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+        
+        wait(for: [expectation0, expectation1], timeout: 30.0)
     }
 }
