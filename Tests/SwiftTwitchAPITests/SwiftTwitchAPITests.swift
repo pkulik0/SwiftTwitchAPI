@@ -520,8 +520,10 @@ class SwiftTwitchAPITests: XCTestCase {
         wait(for: [expectation0, expectation1], timeout: 30.0)
     }
     
-    func testGetTags() throws {
-        let expectation = XCTestExpectation(description: "getTags")
+    func testTags() throws {
+        let expectation0 = XCTestExpectation(description: "getAllTags")
+        let expectation1 = XCTestExpectation(description: "getChannelTags")
+        let expectation2 = XCTestExpectation(description: "updateChannelTags")
 
         api.getTags { result in
             switch(result) {
@@ -532,8 +534,30 @@ class SwiftTwitchAPITests: XCTestCase {
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
-            expectation.fulfill()
+            expectation0.fulfill()
         }
-        wait(for: [expectation], timeout: 30.0)
+        api.getChannelTags(broadcasterID: testerID) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+        api.updateChannelTags(broadcasterID: testerID, tagIDs: []) { result in
+            switch(result) {
+            case .success(let statusCode):
+                XCTAssert(statusCode == 204)
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation2.fulfill()
+        }
+        wait(for: [expectation0, expectation1, expectation2], timeout: 30.0)
     }
 }
