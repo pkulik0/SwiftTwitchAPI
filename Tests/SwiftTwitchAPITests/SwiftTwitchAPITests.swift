@@ -444,4 +444,23 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation0, expectation1], timeout: 30.0)
     }
+    
+    func testCodeStatus() throws {
+        let expectation = XCTestExpectation(description: "getCodeStatus")
+
+        api.getCodeStatus(userID: testerID, codes: ["fakeCode"]) { result in
+            switch(result) {
+            case .success(let result):
+                let codeStatus = result.data.first?.status
+                print(codeStatus!.rawValue)
+                XCTAssert(codeStatus == .notFound)
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 30.0)
+    }
 }
