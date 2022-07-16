@@ -6,7 +6,7 @@
 //
 
 extension SwiftTwitchAPI {
-    struct GameResponse: Codable {
+    struct CategoryResponse: Codable {
         let id: String
         let name: String
         let boxArtUrl: String
@@ -18,7 +18,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getTopGames(after: String? = nil, before: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<GameResponse>, TwitchAPIError>) -> Void) {
+    func getTopCategories(after: String? = nil, before: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<CategoryResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         if let after = after {
@@ -35,7 +35,7 @@ extension SwiftTwitchAPI {
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getGames(gameIDs: [String] = [], names: [String] = [], onCompletion: @escaping (Result<Paginated<GameResponse>, TwitchAPIError>) -> Void) {
+    func getCategories(gameIDs: [String] = [], names: [String] = [], onCompletion: @escaping (Result<Paginated<CategoryResponse>, TwitchAPIError>) -> Void) {
         if gameIDs.isEmpty && names.isEmpty {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -48,7 +48,7 @@ extension SwiftTwitchAPI {
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func findCategories(query: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<GameResponse>, TwitchAPIError>) -> Void) {
+    func findCategories(query: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<CategoryResponse>, TwitchAPIError>) -> Void) {
         let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         guard let encodedQuery = encodedQuery else {
             onCompletion(.failure(.invalidRequest))
