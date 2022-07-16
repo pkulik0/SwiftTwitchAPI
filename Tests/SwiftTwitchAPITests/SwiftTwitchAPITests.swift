@@ -22,23 +22,36 @@ class SwiftTwitchAPITests: XCTestCase {
         wait(for: [expectation], timeout: 30.0)
     }
     
-    func testGetTopGames() throws {
-        let expectation = XCTestExpectation(description: "api")
+    func testGetGames() throws {
+        let expectation0 = XCTestExpectation(description: "getTopGames")
+        let expectation1 = XCTestExpectation(description: "getGames")
     
         api.getTopGames { result in
-            expectation.fulfill()
             switch(result) {
-            case .success(let paginatedGames):
-                XCTAssert(paginatedGames.pagination?.cursor != nil)
+            case .success(_):
+                break
             case .failure(.serverError(error: let error)):
                 XCTFail(error.message)
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
+            expectation0.fulfill()
         }
-        wait(for: [expectation], timeout: 30.0)
+        api.getGames(names: ["Minecraft"]) { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(.serverError(error: let error)):
+                XCTFail(error.message)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+        
+        wait(for: [expectation0, expectation1], timeout: 30.0)
     }
-    
+
     func testRunCommercial() throws {
         let expectation = XCTestExpectation(description: "api")
         
