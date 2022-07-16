@@ -6,11 +6,11 @@
 //
 
 extension SwiftTwitchAPI {
-    struct TagResponse: Codable {
-        let tagID: String
-        let isAuto: Bool
-        let localizationNames: [String: String]
-        let localizationDescriptions: [String: String]
+    public struct TagResponse: Codable {
+        public let tagID: String
+        public let isAuto: Bool
+        public let localizationNames: [String: String]
+        public let localizationDescriptions: [String: String]
 
         enum CodingKeys: String, CodingKey {
             case tagID = "tag_id"
@@ -20,7 +20,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getTags(tagIDs: [String]? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
+    public func getTags(tagIDs: [String]? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         var endpoint = "tags/streams?"
@@ -38,11 +38,11 @@ extension SwiftTwitchAPI {
         requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getChannelTags(broadcasterID: String, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
+    public func getChannelTags(broadcasterID: String, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
-    func updateChannelTags(broadcasterID: String, tagIDs: [String] = [], onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+    public func updateChannelTags(broadcasterID: String, tagIDs: [String] = [], onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
         var requestBody: [String: Any] = [:]
         requestBody["tag_ids"] = tagIDs
         

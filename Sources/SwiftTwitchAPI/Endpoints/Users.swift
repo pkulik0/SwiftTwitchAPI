@@ -5,19 +5,19 @@
 //  Created by pkulik0 on 16/07/2022.
 //
 
-extension SwiftTwitchAPI {
+public extension SwiftTwitchAPI {
     struct UserResponse: Codable {
-        let id: String
-        let login: String
-        let displayName: String
-        let type: String
-        let broadcasterType: String
-        let welcomeDescription: String
-        let profileImageURL: String
-        let offlineImageURL: String
-        let viewCount: Int
-        let email: String?
-        let createdAt: String
+        public let id: String
+        public let login: String
+        public let displayName: String
+        public let type: String
+        public let broadcasterType: String
+        public let welcomeDescription: String
+        public let profileImageURL: String
+        public let offlineImageURL: String
+        public let viewCount: Int
+        public let email: String?
+        public let createdAt: String
 
         enum CodingKeys: String, CodingKey {
             case id, login, type, email
@@ -44,12 +44,12 @@ extension SwiftTwitchAPI {
     }
     
     struct FollowResponse: Codable {
-        let fromID: String
-        let fromLogin: String
-        let fromName: String
-        let toID: String
-        let toName: String
-        let followedAt: String
+        public let fromID: String
+        public let fromLogin: String
+        public let fromName: String
+        public let toID: String
+        public let toName: String
+        public let followedAt: String
 
         enum CodingKeys: String, CodingKey {
             case fromID = "from_id"
@@ -90,9 +90,9 @@ extension SwiftTwitchAPI {
     }
     
     struct BlockedUserResponse: Codable {
-        let userID: String
-        let userLogin: String
-        let displayName: String
+        public let userID: String
+        public let userLogin: String
+        public let displayName: String
 
         enum CodingKeys: String, CodingKey {
             case userID = "user_id"

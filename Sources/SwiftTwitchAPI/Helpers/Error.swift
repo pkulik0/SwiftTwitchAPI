@@ -5,11 +5,11 @@
 //  Created by pkulik0 on 28/06/2022.
 //
 
-extension SwiftTwitchAPI {
+public extension SwiftTwitchAPI {
     class ErrorResponse: Codable {
-        let error: String
-        let message: String
-        let status: Int
+        public let error: String
+        public let message: String
+        public let status: Int
     }
 
     enum TwitchAPIError: Error {

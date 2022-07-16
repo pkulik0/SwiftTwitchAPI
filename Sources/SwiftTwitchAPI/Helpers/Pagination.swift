@@ -5,16 +5,16 @@
 //  Created by pkulik0 on 28/06/2022.
 //
 
-class Paginated<WrappedType: Codable>: Codable {
-    struct PaginationData: Codable {
+public class Paginated<WrappedType: Codable>: Codable {
+    public struct PaginationData: Codable {
         let cursor: String
     }
 
-    let data: [WrappedType]
-    let pagination: PaginationData?
-    let total: Int?
+    public let data: [WrappedType]
+    public let pagination: PaginationData?
+    public let total: Int?
     
-    required init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         pagination = try? values.decode(PaginationData.self, forKey: .pagination)

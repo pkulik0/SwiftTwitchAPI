@@ -5,7 +5,7 @@
 //  Created by pkulik0 on 09/07/2022.
 //
 
-extension SwiftTwitchAPI {
+public extension SwiftTwitchAPI {
     struct BadgeResponse: Codable {
         let setID: String
         let versions: [Version]

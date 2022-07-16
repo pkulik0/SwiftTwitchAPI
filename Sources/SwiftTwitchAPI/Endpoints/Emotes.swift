@@ -5,7 +5,7 @@
 //  Created by pkulik0 on 09/07/2022.
 //
 
-extension SwiftTwitchAPI {
+public extension SwiftTwitchAPI {
     struct EmotesResponse: Codable {
         let id: String
         let name: String

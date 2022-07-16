@@ -1,19 +1,23 @@
 import Foundation
 
 public struct SwiftTwitchAPI {
-    private let clientID: String
-    private var authToken: String
+    let clientID: String
+    let authToken: String
 
     public init(clientID: String, authToken: String) {
         self.clientID = clientID
         self.authToken = authToken
     }
 
-    internal enum RequestMethod: String {
+    enum RequestMethod: String {
         case GET, POST, PUT, PATCH, DELETE
     }
     
-    internal func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
+    public func test() {
+        print("ehe")
+    }
+    
+    func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
         let parametersString = parameters.map { (key, value) in
             "\(key)=\(value)"
         }.joined(separator: "&")
@@ -24,7 +28,7 @@ public struct SwiftTwitchAPI {
         return endpoint
     }
     
-    internal func requestAPI(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+    func requestAPI(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
         let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
         
         var request = URLRequest(url: apiURL)
@@ -65,7 +69,7 @@ public struct SwiftTwitchAPI {
         }.resume()
     }
     
-    internal func requestAPI<T: Codable>(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<T, TwitchAPIError>) -> Void) {
+    func requestAPI<T: Codable>(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<T, TwitchAPIError>) -> Void) {
         let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
         
         var request = URLRequest(url: apiURL)

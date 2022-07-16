@@ -5,22 +5,22 @@
 //  Created by pkulik0 on 16/07/2022.
 //
 
-extension SwiftTwitchAPI {
+public extension SwiftTwitchAPI {
     struct StreamResponse: Codable {
-        let id: String
-        let userID: String
-        let userLogin: String
-        let userName: String
-        let gameID: String
-        let gameName: String
-        let type: String
-        let title: String
-        let viewerCount: Int
-        let startedAt: String
-        let language: String
-        let thumbnailURL: String
-        let tagIDS: [String]?
-        let isMature: Bool
+        public let id: String
+        public let userID: String
+        public let userLogin: String
+        public let userName: String
+        public let gameID: String
+        public let gameName: String
+        public let type: String
+        public let title: String
+        public let viewerCount: Int
+        public let startedAt: String
+        public let language: String
+        public let thumbnailURL: String
+        public let tagIDS: [String]?
+        public let isMature: Bool
 
         enum CodingKeys: String, CodingKey {
             case id, type, title, language

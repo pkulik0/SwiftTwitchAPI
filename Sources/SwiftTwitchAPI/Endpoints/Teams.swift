@@ -6,19 +6,19 @@
 //
 
 extension SwiftTwitchAPI {
-    struct ChannelTeamResponse: Codable {
-        let broadcasterID: String
-        let broadcasterName: String
-        let broadcasterLogin: String
-        let backgroundImageURL: String?
-        let banner: String?
-        let createdAt: String
-        let updatedAt: String
-        let info: String
-        let thumbnailURL: String
-        let teamName: String
-        let teamDisplayName: String
-        let id: String
+    public struct ChannelTeamResponse: Codable {
+        public let broadcasterID: String
+        public let broadcasterName: String
+        public let broadcasterLogin: String
+        public let backgroundImageURL: String?
+        public let banner: String?
+        public let createdAt: String
+        public let updatedAt: String
+        public let info: String
+        public let thumbnailURL: String
+        public let teamName: String
+        public let teamDisplayName: String
+        public let id: String
 
         enum CodingKeys: String, CodingKey {
             case banner, info, id
@@ -34,21 +34,21 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getChannelTeams(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelTeamResponse>, TwitchAPIError>) -> Void) {
+    public func getChannelTeams(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelTeamResponse>, TwitchAPIError>) -> Void) {
         requestAPI(endpoint: "teams/channel?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
-    struct TeamResponse: Codable {
-        let id: String
-        let users: [User]
-        let backgroundImageURL: String?
-        let banner: String?
-        let createdAt: String
-        let updatedAt: String
-        let info: String
-        let thumbnailURL: String
-        let teamName: String
-        let teamDisplayName: String
+    public struct TeamResponse: Codable {
+        public let id: String
+        public let users: [User]
+        public let backgroundImageURL: String?
+        public let banner: String?
+        public let createdAt: String
+        public let updatedAt: String
+        public let info: String
+        public let thumbnailURL: String
+        public let teamName: String
+        public let teamDisplayName: String
 
         enum CodingKeys: String, CodingKey {
             case users, banner, info, id
@@ -60,10 +60,10 @@ extension SwiftTwitchAPI {
             case teamDisplayName = "team_display_name"
         }
         
-        struct User: Codable {
-            let userID: String
-            let userName: String
-            let userLogin: String
+        public struct User: Codable {
+            public let userID: String
+            public let userName: String
+            public let userLogin: String
 
             enum CodingKeys: String, CodingKey {
                 case userID = "user_id"
@@ -73,7 +73,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getTeamInformation(name: String? = nil, id: String? = nil, onCompletion: @escaping (Result<Paginated<TeamResponse>, TwitchAPIError>) -> Void) {
+    public func getTeamInformation(name: String? = nil, id: String? = nil, onCompletion: @escaping (Result<Paginated<TeamResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         if let name = name {

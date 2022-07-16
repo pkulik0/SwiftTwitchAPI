@@ -5,7 +5,7 @@
 //  Created by pkulik0 on 28/06/2022.
 //
 
-extension SwiftTwitchAPI {
+public extension SwiftTwitchAPI {
     struct CategoryResponse: Codable {
         let id: String
         let name: String

@@ -5,7 +5,7 @@
 //  Created by pkulik0 on 29/06/2022.
 //
 
-extension SwiftTwitchAPI {
+public extension SwiftTwitchAPI {
     struct BitsLeaderboardResponse: Codable {
         let user_id: String
         let user_login: String

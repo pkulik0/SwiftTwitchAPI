@@ -5,7 +5,7 @@
 //  Created by pkulik0 on 16/07/2022.
 //
 
-extension SwiftTwitchAPI {
+public extension SwiftTwitchAPI {
     struct ChatSettingsResponse: Codable {
         let broadcasterID: String
         let isInSlowMode: Bool
