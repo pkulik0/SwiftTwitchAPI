@@ -20,7 +20,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    func getAllTags(tagIDs: [String]? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
+    func getTags(tagIDs: [String]? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         var endpoint = "tags/streams?"

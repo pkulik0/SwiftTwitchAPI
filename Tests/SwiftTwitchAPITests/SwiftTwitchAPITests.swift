@@ -523,7 +523,7 @@ class SwiftTwitchAPITests: XCTestCase {
     func testGetTags() throws {
         let expectation = XCTestExpectation(description: "getTags")
 
-        api.getAllTags { result in
+        api.getTags { result in
             switch(result) {
             case .success(_):
                 break
