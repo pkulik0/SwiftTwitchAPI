@@ -6,7 +6,7 @@
 //
 
 extension SwiftTwitchAPI {
-    public struct ChannelRewardResponse: Codable {
+    public struct ChannelRewardResponse: Codable, Identifiable {
         public let broadcasterName: String
         public let broadcasterLogin: String
         public let broadcasterID: String
@@ -153,7 +153,7 @@ extension SwiftTwitchAPI {
         requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&only_manageable_rewards=\(onlyManagable)", onCompletion: onCompletion)
     }
     
-    public struct ChannelRewardRedemptionResponse: Codable {
+    public struct ChannelRewardRedemptionResponse: Codable, Identifiable {
         public let broadcasterName: String
         public let broadcasterLogin: String
         public let broadcasterID: String
@@ -189,7 +189,7 @@ extension SwiftTwitchAPI {
             case newToOld = "NEWEST"
         }
         
-        public struct Reward: Codable {
+        public struct Reward: Codable, Identifiable {
             public let id: String
             public let title: String
             public let prompt: String

@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct StreamResponse: Codable {
+    struct StreamResponse: Codable, Identifiable {
         public let id: String
         public let userID: String
         public let userLogin: String

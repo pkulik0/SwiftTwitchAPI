@@ -6,7 +6,7 @@
 //
 
 extension SwiftTwitchAPI {
-    public struct ChannelTeamResponse: Codable {
+    public struct ChannelTeamResponse: Codable, Identifiable {
         public let broadcasterID: String
         public let broadcasterName: String
         public let broadcasterLogin: String
@@ -38,7 +38,7 @@ extension SwiftTwitchAPI {
         requestAPI(endpoint: "teams/channel?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
-    public struct TeamResponse: Codable {
+    public struct TeamResponse: Codable, Identifiable {
         public let id: String
         public let users: [User]
         public let backgroundImageURL: String?
