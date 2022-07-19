@@ -7,9 +7,9 @@
 
 public extension SwiftTwitchAPI {
     struct CommercialResponse: Codable {
-        let message: String
-        let length: Int
-        let retryAfter: Int
+        public let message: String
+        public let length: Int
+        public let retryAfter: Int
         
         enum CodingKeys: String, CodingKey {
             case message

@@ -7,16 +7,16 @@
 
 public extension SwiftTwitchAPI {
     struct ChatSettingsResponse: Codable {
-        let broadcasterID: String
-        let isInSlowMode: Bool
-        let slowModeWaitTime: Int?
-        let isInFollowerMode: Bool
-        let followerModeDuration: Int?
-        let isInSubscriberMode: Bool
-        let isInEmoteMode: Bool
-        let isInUniqueChatMode: Bool
-        let isNonModeratorChatDelayEnabled: Bool?
-        let nonModeratorChatDelayDuration: Int?
+        public let broadcasterID: String
+        public let isInSlowMode: Bool
+        public let slowModeWaitTime: Int?
+        public let isInFollowerMode: Bool
+        public let followerModeDuration: Int?
+        public let isInSubscriberMode: Bool
+        public let isInEmoteMode: Bool
+        public let isInUniqueChatMode: Bool
+        public let isNonModeratorChatDelayEnabled: Bool?
+        public let nonModeratorChatDelayDuration: Int?
 
         enum CodingKeys: String, CodingKey {
             case broadcasterID = "broadcaster_id"
@@ -95,10 +95,10 @@ public extension SwiftTwitchAPI {
     }
     
     struct ChatColorResponse: Codable {
-        let userID: String
-        let userName: String
-        let userLogin: String
-        let color: String
+        public let userID: String
+        public let userName: String
+        public let userLogin: String
+        public let color: String
 
         enum CodingKeys: String, CodingKey {
             case userID = "user_id"

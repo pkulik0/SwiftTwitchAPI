@@ -7,17 +7,17 @@
 
 public extension SwiftTwitchAPI {
     struct BadgeResponse: Codable {
-        let setID: String
-        let versions: [Version]
+        public let setID: String
+        public let versions: [Version]
 
         enum CodingKeys: String, CodingKey {
             case setID = "set_id"
             case versions
         }
         
-        struct Version: Codable {
-            let id: String
-            let imageURL1X, imageURL2X, imageURL4X: String
+        public struct Version: Codable {
+            public let id: String
+            public let imageURL1X, imageURL2X, imageURL4X: String
 
             enum CodingKeys: String, CodingKey {
                 case id

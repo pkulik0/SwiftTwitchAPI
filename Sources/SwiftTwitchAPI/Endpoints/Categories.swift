@@ -7,9 +7,9 @@
 
 public extension SwiftTwitchAPI {
     struct CategoryResponse: Codable {
-        let id: String
-        let name: String
-        let boxArtUrl: String
+        public let id: String
+        public let name: String
+        public let boxArtUrl: String
         
         enum CodingKeys: String, CodingKey {
             case id

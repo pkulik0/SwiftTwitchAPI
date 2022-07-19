@@ -7,19 +7,19 @@
 
 public extension SwiftTwitchAPI {
     struct BitsLeaderboardResponse: Codable {
-        let user_id: String
-        let user_login: String
-        let user_name: String
+        public let user_id: String
+        public let user_login: String
+        public let user_name: String
         
-        let rank: Int
-        let score: Int
-        let total: Int
+        public let rank: Int
+        public let score: Int
+        public let total: Int
 
-        let dateRange: DateRange
+        public let dateRange: DateRange
         
-        struct DateRange: Codable {
-            let endedAt: String
-            let startedAt: String
+        public struct DateRange: Codable {
+            public let endedAt: String
+            public let startedAt: String
             
             enum CodingKeys: String, CodingKey {
                 case endedAt = "ended_at"
@@ -29,12 +29,12 @@ public extension SwiftTwitchAPI {
     }
     
     struct BitsCheermoteResponse: Codable {
-        let lastUpdated: String
-        let order: Int
-        let prefix: String
-        let type: TypeEnum
-        let isCharitable: Bool
-        let tiers: [Tier]
+        public let lastUpdated: String
+        public let order: Int
+        public let prefix: String
+        public let type: TypeEnum
+        public let isCharitable: Bool
+        public let tiers: [Tier]
 
         enum CodingKeys: String, CodingKey {
             case lastUpdated = "last_updated"
@@ -45,7 +45,7 @@ public extension SwiftTwitchAPI {
             case tiers
         }
         
-        enum TypeEnum: String, Codable {
+        public enum TypeEnum: String, Codable {
             case globalFirstParty = "global_first_party"
             case globalThirdParty = "global_third_party"
             case displayOnly = "display_only"
@@ -53,7 +53,7 @@ public extension SwiftTwitchAPI {
             case sponsored = "sponsored"
         }
 
-        struct Tier: Codable {
+        public struct Tier: Codable {
             let minBits: Int
             let id: String
             let canCheer: Bool
@@ -70,11 +70,11 @@ public extension SwiftTwitchAPI {
                 case color
             }
 
-            struct Images: Codable {
+            public struct Images: Codable {
                 let light: ImageData
                 let dark: ImageData
     
-                struct ImageData: Codable {
+                public struct ImageData: Codable {
                     let animatedSizes: Size
                     let staticSizes: Size
 
@@ -83,7 +83,7 @@ public extension SwiftTwitchAPI {
                         case staticSizes = "static"
                     }
 
-                    struct Size: Codable {
+                    public struct Size: Codable {
                         let the1, the15, the2, the3, the4: String
 
                         enum CodingKeys: String, CodingKey {

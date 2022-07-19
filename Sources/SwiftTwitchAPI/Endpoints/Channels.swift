@@ -7,16 +7,16 @@
 
 public extension SwiftTwitchAPI {
     struct ChannelResponse: Codable {
-        let broadcasterID: String
-        let broadcasterLogin: String
-        let broadcasterName: String
-        let broadcasterLanguage: String
+        public let broadcasterID: String
+        public let broadcasterLogin: String
+        public let broadcasterName: String 
+        public let broadcasterLanguage: String
         
-        let gameName: String
-        let gameID: String
+        public let gameName: String
+        public let gameID: String
         
-        let title: String
-        let delay: Int
+        public let title: String
+        public let delay: Int
         
         enum CodingKeys: String, CodingKey {
             case broadcasterID = "broadcaster_id"
@@ -67,9 +67,9 @@ public extension SwiftTwitchAPI {
     }
     
     struct ChannelEditorResponse: Codable {
-        let userID: String
-        let userName: String
-        let createdAt: String
+        public let userID: String
+        public let userName: String
+        public let createdAt: String
         
         enum CodingKeys: String, CodingKey {
             case userID = "user_id"
@@ -83,15 +83,15 @@ public extension SwiftTwitchAPI {
     }
     
     struct CreatorGoalResponse: Codable {
-        let id: String
-        let broadcasterID: String
-        let broadcasterName: String
-        let broadcasterLogin: String
-        let type: String
-        let welcomeDescription: String
-        let currentAmount: Int
-        let targetAmount: Int
-        let createdAt: String
+        public let id: String
+        public let broadcasterID: String
+        public let broadcasterName: String
+        public let broadcasterLogin: String
+        public let type: String
+        public let welcomeDescription: String
+        public let currentAmount: Int
+        public let targetAmount: Int
+        public let createdAt: String
 
         enum CodingKeys: String, CodingKey {
             case id, type
@@ -110,17 +110,17 @@ public extension SwiftTwitchAPI {
     }
     
     struct ChannelSearchResponse: Codable {
-        let broadcasterLanguage: String
-        let broadcasterLogin: String
-        let displayName: String
-        let gameID: String
-        let gameName: String
-        let id: String
-        let isLive: Bool
-        let tagsIDS: [String]?
-        let thumbnailURL: String
-        let title: String
-        let startedAt: String?
+        public let broadcasterLanguage: String
+        public let broadcasterLogin: String
+        public let displayName: String
+        public let gameID: String
+        public let gameName: String
+        public let id: String
+        public let isLive: Bool
+        public let tagsIDS: [String]?
+        public let thumbnailURL: String
+        public let title: String
+        public let startedAt: String?
 
         enum CodingKeys: String, CodingKey {
             case id, title
@@ -159,11 +159,11 @@ public extension SwiftTwitchAPI {
     }
     
     struct ChannelHypetrainResponse: Codable {
-        let id: String
-        let eventType: String
-        let eventTimestamp: String
-        let version: String
-        let eventData: EventData
+        public let id: String
+        public let eventType: String
+        public let eventTimestamp: String
+        public let version: String
+        public let eventData: EventData
 
         enum CodingKeys: String, CodingKey {
             case id, version
@@ -172,23 +172,23 @@ public extension SwiftTwitchAPI {
             case eventData = "event_data"
         }
         
-        struct Contribution: Codable {
-            let total: Int
-            let type: String
-            let user: String
+        public struct Contribution: Codable {
+            public let total: Int
+            public let type: String
+            public let user: String
         }
         
-        struct EventData: Codable {
-            let broadcasterID: String
-            let cooldownEndTime: String
-            let expiresAt: String
-            let goal: Int
-            let id: String
-            let level: Int
-            let total: Int
-            let startedAt: String
-            let lastContribution: Contribution
-            let topContributions: [Contribution]
+        public struct EventData: Codable {
+            public let broadcasterID: String
+            public let cooldownEndTime: String
+            public let expiresAt: String
+            public let goal: Int
+            public let id: String
+            public let level: Int
+            public let total: Int
+            public let startedAt: String
+            public let lastContribution: Contribution
+            public let topContributions: [Contribution]
             
             enum CodingKeys: String, CodingKey {
                 case goal, id, level, total

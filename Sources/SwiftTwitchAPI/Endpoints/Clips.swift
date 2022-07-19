@@ -7,8 +7,8 @@
 
 public extension SwiftTwitchAPI {
     struct NewClipResponse: Codable {
-        let id: String
-        let editUrl: String
+        public let id: String
+        public let editUrl: String
         
         enum CodingKeys: String, CodingKey {
             case id
@@ -21,21 +21,21 @@ public extension SwiftTwitchAPI {
     }
     
     struct ClipResponse: Codable {
-        let id: String
-        let url: String
-        let embedURL: String
-        let broadcasterID: String
-        let broadcasterName: String
-        let creatorID: String
-        let creatorName: String
-        let videoID: String
-        let gameID: String
-        let language: String
-        let title: String
-        let viewCount: Int
-        let createdAt: String
-        let thumbnailURL: String
-        let duration: Double
+        public let id: String
+        public let url: String
+        public let embedURL: String
+        public let broadcasterID: String
+        public let broadcasterName: String
+        public let creatorID: String
+        public let creatorName: String
+        public let videoID: String
+        public let gameID: String
+        public let language: String
+        public let title: String
+        public let viewCount: Int
+        public let createdAt: String
+        public let thumbnailURL: String
+        public let duration: Double
 
         enum CodingKeys: String, CodingKey {
             case id, url, language, title, duration

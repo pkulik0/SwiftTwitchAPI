@@ -7,15 +7,15 @@
 
 public extension SwiftTwitchAPI {
     struct EmotesResponse: Codable {
-        let id: String
-        let name: String
-        let images: Image
-        let tier: String
-        let emoteType: String
-        let emoteSetID: String
-        let format: [String]
-        let scale: [String]
-        let themeMode: [String]
+        public let id: String
+        public let name: String
+        public let images: Image
+        public let tier: String
+        public let emoteType: String
+        public let emoteSetID: String
+        public let format: [String]
+        public let scale: [String]
+        public let themeMode: [String]
 
         enum CodingKeys: String, CodingKey {
             case id, name, images, tier, format, scale
@@ -24,8 +24,8 @@ public extension SwiftTwitchAPI {
             case themeMode = "theme_mode"
         }
         
-        struct Image: Codable {
-            let url1X, url2X, url4X: String
+        public struct Image: Codable {
+            public let url1X, url2X, url4X: String
 
             enum CodingKeys: String, CodingKey {
                 case url1X = "url_1x"
