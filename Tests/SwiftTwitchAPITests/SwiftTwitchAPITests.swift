@@ -302,8 +302,8 @@ class SwiftTwitchAPITests: XCTestCase {
         api.getGlobalEmotes { result in
             expectation2.fulfill()
             switch(result) {
-            case .success(_):
-                break
+            case .success(let result):
+                XCTAssertFalse(result.data.isEmpty)
             case .failure(.serverError(error: let error)):
                 XCTFail(error.message)
             case .failure(let error):

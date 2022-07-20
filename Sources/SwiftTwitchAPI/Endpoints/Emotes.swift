@@ -10,9 +10,9 @@ public extension SwiftTwitchAPI {
         public let id: String
         public let name: String
         public let images: Image
-        public let tier: String
-        public let emoteType: String
-        public let emoteSetID: String
+        public let tier: String?
+        public let emoteType: String?
+        public let emoteSetID: String?
         public let format: [String]
         public let scale: [String]
         public let themeMode: [String]
