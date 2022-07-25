@@ -131,7 +131,7 @@ extension SwiftTwitchAPI {
     public func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
         let requestBody = getChannelRewardRequestBody(title: title, cost: cost, prompt: prompt, isEnabled: isEnabled, backgroundColor: backgroundColor, isUserInputRequired: isUserInputRequired, isMaxPerStreamEnabled: isMaxPerStreamEnabled, maxPerStream: maxPerStream, isMaxPerUserPerStreamEnabled: isMaxPerStreamEnabled, maxPerUserPerStream: maxPerUserPerStream, isGlobalCooldownEnabled: isGlobalCooldownEnabled, globalCooldown: globalCooldown, shouldSkipQueue: shouldSkipQueue)
         
-        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     public func updateChannelReward(broadcasterID: String, rewardID: String, title: String? = nil, cost: Int? = nil, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
@@ -142,15 +142,15 @@ extension SwiftTwitchAPI {
             return
         }
 
-        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     public func removeChannelReward(broadcasterID: String, rewardID: String, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .DELETE, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .DELETE, onCompletion: onCompletion)
     }
     
     public func getChannelRewards(broadcasterID: String, onlyManagable: Bool = false, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&only_manageable_rewards=\(onlyManagable)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&only_manageable_rewards=\(onlyManagable)", onCompletion: onCompletion)
     }
     
     public struct ChannelRewardRedemptionResponse: Codable, Identifiable {
@@ -227,7 +227,7 @@ extension SwiftTwitchAPI {
                 endpoint += "&id=\(redemptionID)"
             }
         }
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
     public func updateChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionIDs: [String], status: ChannelRewardRedemptionResponse.Status, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
@@ -242,6 +242,6 @@ extension SwiftTwitchAPI {
         var endpoint = "channel_points/custom_rewards/redemptions?broadcaster_id=\(broadcasterID)&reward_id=\(rewardID)"
         redemptionIDs.forEach({ endpoint.append("id=\($0)&") })
 
-        requestAPI(endpoint: endpoint, requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
 }

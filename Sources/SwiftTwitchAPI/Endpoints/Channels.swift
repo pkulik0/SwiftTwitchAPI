@@ -39,7 +39,7 @@ public extension SwiftTwitchAPI {
         var endpoint = "channels?"
         broadcasterIDs.forEach({ endpoint.append("broadcaster_id=\($0)&") })
 
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 
     func modifyChannel(broadcasterID: String, gameID: String? = nil, broadcasterLanguage: String? = nil, title: String? = nil, delay: Int? = nil, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
@@ -63,7 +63,7 @@ public extension SwiftTwitchAPI {
             return
         }
         
-        requestAPI(endpoint: "channels?broadcaster_id=\(broadcasterID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "channels?broadcaster_id=\(broadcasterID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     struct ChannelEditorResponse: Codable {
@@ -79,7 +79,7 @@ public extension SwiftTwitchAPI {
     }
     
     func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelEditorResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "channels/editors?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "channels/editors?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     struct CreatorGoalResponse: Codable {
@@ -106,7 +106,7 @@ public extension SwiftTwitchAPI {
     }
     
     func getCreatorGoals(broadcasterID: String, onCompletion: @escaping (Result<Paginated<CreatorGoalResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "goals?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "goals?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     struct ChannelSearchResponse: Codable {
@@ -155,7 +155,7 @@ public extension SwiftTwitchAPI {
             parameters["live_only"] = String(showLiveOnly)
         }
         
-        requestAPI(endpoint: "search/channels?query=\(encodedQuery)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "search/channels?query=\(encodedQuery)", onCompletion: onCompletion)
     }
     
     struct ChannelHypetrainResponse: Codable {
@@ -213,6 +213,6 @@ public extension SwiftTwitchAPI {
         }
         
         let endpoint = appendParameters(parameters, to: "hypetrain/events?broadcaster_id=\(broadcasterID)")
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

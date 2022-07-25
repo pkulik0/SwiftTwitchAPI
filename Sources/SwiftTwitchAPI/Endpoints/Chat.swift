@@ -37,7 +37,7 @@ public extension SwiftTwitchAPI {
         if let moderatorID = moderatorID {
             endpoint += "&moderator_id=\(moderatorID)"
         }
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
     func updateChatSettings(broadcasterID: String, moderatorID: String, isInEmoteMode: Bool? = nil, isInFollowerMode: Bool? = nil, followerModeDuration: Int? = nil, isInSlowMode: Bool? = nil, slowModeWaitTime: Int? = nil, isInSubscriberMode: Bool? = nil, isInUniqueChatMode: Bool? = nil, isNonModeratorChatDelayEnabled: Bool? = nil, nonModeratorChatDelayDuration: Int? = nil, onCompletion: @escaping (Result<Paginated<ChatSettingsResponse>, TwitchAPIError>) -> Void) {
@@ -76,7 +76,7 @@ public extension SwiftTwitchAPI {
             return
         }
         
-        requestAPI(endpoint: "chat/settings?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "chat/settings?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     enum AnnouncementColor: String, Codable {
@@ -91,7 +91,7 @@ public extension SwiftTwitchAPI {
             requestBody["color"] = color.rawValue
         }
 
-        requestAPI(endpoint: "chat/announcements?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "chat/announcements?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     struct ChatColorResponse: Codable {
@@ -118,7 +118,7 @@ public extension SwiftTwitchAPI {
         var endpoint = "chat/color?"
         userIDs.forEach({ endpoint.append("user_id=\($0)&") })
         
-        requestAPI(endpoint: endpoint, requestMethod: .GET, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, requestMethod: .GET, onCompletion: onCompletion)
     }
     
     enum ChatColor: String, Codable {
@@ -135,6 +135,6 @@ public extension SwiftTwitchAPI {
     }
     
     func updateChatColor(userID: String, color: ChatColor, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "chat/color?user_id=\(userID)&color=\(color.rawValue)", requestMethod: .PUT, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "chat/color?user_id=\(userID)&color=\(color.rawValue)", requestMethod: .PUT, onCompletion: onCompletion)
     }
 }

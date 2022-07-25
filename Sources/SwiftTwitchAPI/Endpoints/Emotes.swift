@@ -37,11 +37,11 @@ public extension SwiftTwitchAPI {
     }
     
     func getChannelEmotes(broadcasterID: String, onCompletion: @escaping (Result<Paginated<EmoteResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "chat/emotes?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "chat/emotes?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     func getGlobalEmotes(onCompletion: @escaping (Result<Paginated<EmoteResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "chat/emotes/global", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "chat/emotes/global", onCompletion: onCompletion)
     }
     
     func getEmoteSets(emoteSetIDs: [String], onCompletion: @escaping (Result<Paginated<EmoteResponse>, TwitchAPIError>) -> Void) {
@@ -53,6 +53,6 @@ public extension SwiftTwitchAPI {
         var endpoint = "chat/emotes/set?"
         emoteSetIDs.forEach({ endpoint.append("emote_set_id=\($0)&") })
         
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

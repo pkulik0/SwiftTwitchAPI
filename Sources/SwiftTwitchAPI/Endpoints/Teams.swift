@@ -35,7 +35,7 @@ extension SwiftTwitchAPI {
     }
     
     public func getChannelTeams(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelTeamResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "teams/channel?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "teams/channel?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     public struct TeamResponse: Codable, Identifiable {
@@ -84,6 +84,6 @@ extension SwiftTwitchAPI {
         }
         
         let endpoint = appendParameters(parameters, to: "teams")
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

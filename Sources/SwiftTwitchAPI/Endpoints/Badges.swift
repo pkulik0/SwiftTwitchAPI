@@ -29,10 +29,10 @@ public extension SwiftTwitchAPI {
     }
     
     func getChannelBadges(broadcasterID: String, onCompletion: @escaping (Result<Paginated<BadgeResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "chat/badges?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "chat/badges?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     func getGlobalBadges(onCompletion: @escaping (Result<Paginated<BadgeResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "chat/badges/global", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "chat/badges/global", onCompletion: onCompletion)
     }
 }

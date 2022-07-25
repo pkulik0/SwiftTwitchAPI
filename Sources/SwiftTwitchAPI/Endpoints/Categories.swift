@@ -32,7 +32,7 @@ public extension SwiftTwitchAPI {
         }
         
         let endpoint = appendParameters(parameters, to: "games/top")
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
     func getCategories(gameIDs: [String] = [], names: [String] = [], onCompletion: @escaping (Result<Paginated<CategoryResponse>, TwitchAPIError>) -> Void) {
@@ -45,7 +45,7 @@ public extension SwiftTwitchAPI {
         gameIDs.forEach({ endpoint.append("id=\($0)&") })
         names.forEach({ endpoint.append("name=\($0)&") })
         
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
     func findCategories(query: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<CategoryResponse>, TwitchAPIError>) -> Void) {
@@ -64,6 +64,6 @@ public extension SwiftTwitchAPI {
             parameters["first"] = String(first)
         }
         
-        requestAPI(endpoint: "search/categories?query=\(encodedQuery)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "search/categories?query=\(encodedQuery)", onCompletion: onCompletion)
     }
 }

@@ -18,6 +18,6 @@ public extension SwiftTwitchAPI {
         }
     }
     func runCommercial(broadcasterID: String, length: Int, onCompletion: @escaping (Result<Paginated<CommercialResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "channels/commercial", requestMethod: .POST, requestBody: ["broadcaster_id": broadcasterID, "length": length], onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "channels/commercial", requestMethod: .POST, requestBody: ["broadcaster_id": broadcasterID, "length": length], onCompletion: onCompletion)
     }
 }

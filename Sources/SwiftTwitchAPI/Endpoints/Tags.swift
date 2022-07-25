@@ -35,17 +35,17 @@ extension SwiftTwitchAPI {
         }
         endpoint = appendParameters(parameters, to: endpoint)
         
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
     public func getChannelTags(broadcasterID: String, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
-        requestAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     public func updateChannelTags(broadcasterID: String, tagIDs: [String] = [], onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
         var requestBody: [String: Any] = [:]
         requestBody["tag_ids"] = tagIDs
         
-        requestAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", requestMethod: .PUT, requestBody: requestBody, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", requestMethod: .PUT, requestBody: requestBody, onCompletion: onCompletion)
     }
 }

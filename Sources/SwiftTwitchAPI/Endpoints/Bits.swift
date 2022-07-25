@@ -114,7 +114,7 @@ public extension SwiftTwitchAPI {
             parameters["user_id"] = userID
         }
         let endpoint = appendParameters(parameters, to: "bits/leaderboard")
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
     func getBitsCheermotes(broadcasterID: String? = nil, onCompletion: @escaping (Result<Paginated<BitsCheermoteResponse>, TwitchAPIError>) -> Void) {
@@ -123,6 +123,6 @@ public extension SwiftTwitchAPI {
             parameters["broadcaster_id"] = broadcasterID
         }
         let endpoint = appendParameters(parameters, to: "bits/cheermotes")
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

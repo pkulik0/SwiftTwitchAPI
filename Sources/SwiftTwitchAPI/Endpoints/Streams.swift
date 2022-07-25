@@ -57,7 +57,7 @@ public extension SwiftTwitchAPI {
         userLogins.forEach({ endpoint.append("user_login=\($0)&") })
         endpoint = appendParameters(parameters, to: endpoint)
         
-        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
     func getFollowedStreams(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<StreamResponse>, TwitchAPIError>) -> Void) {
@@ -70,6 +70,6 @@ public extension SwiftTwitchAPI {
             parameters["first"] = String(first)
         }
         
-        requestAPI(endpoint: "streams/followed?user_id=\(userID)", onCompletion: onCompletion)
+        requestTwitchAPI(endpoint: "streams/followed?user_id=\(userID)", onCompletion: onCompletion)
     }
 }
