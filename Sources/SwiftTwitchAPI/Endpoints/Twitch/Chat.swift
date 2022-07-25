@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct ChatSettingsResponse: Codable {
+    struct ChatSettings: Codable {
         public let broadcasterID: String
         public let isInSlowMode: Bool
         public let slowModeWaitTime: Int?
@@ -32,15 +32,15 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getChatSettings(broadcasterID: String, moderatorID: String? = nil, onCompletion: @escaping (Result<Paginated<ChatSettingsResponse>, TwitchAPIError>) -> Void) {
+    func getChatSettings(broadcasterID: String, moderatorID: String? = nil, onCompletion: @escaping (Result<Paginated<ChatSettings>, APIError>) -> Void) {
         var endpoint = "chat/settings?broadcaster_id=\(broadcasterID)"
         if let moderatorID = moderatorID {
             endpoint += "&moderator_id=\(moderatorID)"
         }
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func updateChatSettings(broadcasterID: String, moderatorID: String, isInEmoteMode: Bool? = nil, isInFollowerMode: Bool? = nil, followerModeDuration: Int? = nil, isInSlowMode: Bool? = nil, slowModeWaitTime: Int? = nil, isInSubscriberMode: Bool? = nil, isInUniqueChatMode: Bool? = nil, isNonModeratorChatDelayEnabled: Bool? = nil, nonModeratorChatDelayDuration: Int? = nil, onCompletion: @escaping (Result<Paginated<ChatSettingsResponse>, TwitchAPIError>) -> Void) {
+    func updateChatSettings(broadcasterID: String, moderatorID: String, isInEmoteMode: Bool? = nil, isInFollowerMode: Bool? = nil, followerModeDuration: Int? = nil, isInSlowMode: Bool? = nil, slowModeWaitTime: Int? = nil, isInSubscriberMode: Bool? = nil, isInUniqueChatMode: Bool? = nil, isNonModeratorChatDelayEnabled: Bool? = nil, nonModeratorChatDelayDuration: Int? = nil, onCompletion: @escaping (Result<Paginated<ChatSettings>, APIError>) -> Void) {
         var requestBody: [String: Any] = [:]
         
         if let isInEmoteMode = isInEmoteMode {
@@ -76,14 +76,14 @@ public extension SwiftTwitchAPI {
             return
         }
         
-        requestTwitchAPI(endpoint: "chat/settings?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        requestAPI(endpoint: "chat/settings?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     enum AnnouncementColor: String, Codable {
         case primary, blue, green, orange, purple
     }
     
-    func sendChatAnnouncement(broadcasterID: String, moderatorID: String, message: String, color: AnnouncementColor? = nil, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+    func sendChatAnnouncement(broadcasterID: String, moderatorID: String, message: String, color: AnnouncementColor? = nil, onCompletion: @escaping (Result<Int, APIError>) -> Void) {
         var requestBody: [String: Any] = [:]
         requestBody["message"] = message
         
@@ -91,7 +91,7 @@ public extension SwiftTwitchAPI {
             requestBody["color"] = color.rawValue
         }
 
-        requestTwitchAPI(endpoint: "chat/announcements?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
+        requestAPI(endpoint: "chat/announcements?broadcaster_id=\(broadcasterID)&moderator_id=\(moderatorID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     struct ChatColorResponse: Codable {
@@ -109,7 +109,7 @@ public extension SwiftTwitchAPI {
     }
 
 
-    func getChatColor(userIDs: [String], onCompletion: @escaping (Result<Paginated<ChatColorResponse>,TwitchAPIError>) -> Void) {
+    func getChatColor(userIDs: [String], onCompletion: @escaping (Result<Paginated<ChatColorResponse>,APIError>) -> Void) {
         if userIDs.isEmpty {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -118,7 +118,7 @@ public extension SwiftTwitchAPI {
         var endpoint = "chat/color?"
         userIDs.forEach({ endpoint.append("user_id=\($0)&") })
         
-        requestTwitchAPI(endpoint: endpoint, requestMethod: .GET, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, requestMethod: .GET, onCompletion: onCompletion)
     }
     
     enum ChatColor: String, Codable {
@@ -134,7 +134,7 @@ public extension SwiftTwitchAPI {
         case yellowGreen = "yellow_green"
     }
     
-    func updateChatColor(userID: String, color: ChatColor, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "chat/color?user_id=\(userID)&color=\(color.rawValue)", requestMethod: .PUT, onCompletion: onCompletion)
+    func updateChatColor(userID: String, color: ChatColor, onCompletion: @escaping (Result<Int, APIError>) -> Void) {
+        requestAPI(endpoint: "chat/color?user_id=\(userID)&color=\(color.rawValue)", requestMethod: .PUT, onCompletion: onCompletion)
     }
 }

@@ -6,7 +6,7 @@
 //
 
 extension SwiftTwitchAPI {
-    public struct ChannelTeamResponse: Codable, Identifiable {
+    public struct Team: Codable, Identifiable {
         public let broadcasterID: String
         public let broadcasterName: String
         public let broadcasterLogin: String
@@ -34,8 +34,8 @@ extension SwiftTwitchAPI {
         }
     }
     
-    public func getChannelTeams(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelTeamResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "teams/channel?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+    public func getChannelTeams(broadcasterID: String, onCompletion: @escaping (Result<Paginated<Team>, APIError>) -> Void) {
+        requestAPI(endpoint: "teams/channel?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     public struct TeamResponse: Codable, Identifiable {
@@ -73,7 +73,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    public func getTeamInformation(name: String? = nil, id: String? = nil, onCompletion: @escaping (Result<Paginated<TeamResponse>, TwitchAPIError>) -> Void) {
+    public func getTeamInformation(name: String? = nil, id: String? = nil, onCompletion: @escaping (Result<Paginated<TeamResponse>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         if let name = name {
@@ -84,6 +84,6 @@ extension SwiftTwitchAPI {
         }
         
         let endpoint = appendParameters(parameters, to: "teams")
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

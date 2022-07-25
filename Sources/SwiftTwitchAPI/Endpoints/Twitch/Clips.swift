@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct NewClipResponse: Codable {
+    struct NewClip: Codable {
         public let id: String
         public let editUrl: String
         
@@ -16,8 +16,8 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func createClip(broadcasterID: String, hasDelay: Bool = false, onCompletion: @escaping (Result<Paginated<NewClipResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "clips?broadcaster_id=\(broadcasterID)&has_delay=\(hasDelay)", requestMethod: .POST, onCompletion: onCompletion)
+    func createClip(broadcasterID: String, hasDelay: Bool = false, onCompletion: @escaping (Result<Paginated<NewClip>, APIError>) -> Void) {
+        requestAPI(endpoint: "clips?broadcaster_id=\(broadcasterID)&has_delay=\(hasDelay)", requestMethod: .POST, onCompletion: onCompletion)
     }
     
     struct ClipResponse: Codable {
@@ -52,15 +52,15 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getClips(broadcasterID: String, after: String? = nil, before: String? = nil, startedAt: String? = nil, endedAt: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ClipResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "clips?broadcaster_id=\(broadcasterID)", requestMethod: .GET, onCompletion: onCompletion)
+    func getClips(broadcasterID: String, after: String? = nil, before: String? = nil, startedAt: String? = nil, endedAt: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ClipResponse>, APIError>) -> Void) {
+        requestAPI(endpoint: "clips?broadcaster_id=\(broadcasterID)", requestMethod: .GET, onCompletion: onCompletion)
     }
     
-    func getClips(gameID: String, after: String? = nil, before: String? = nil, startedAt: String? = nil, endedAt: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ClipResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "clips?game_id=\(gameID)", requestMethod: .GET, onCompletion: onCompletion)
+    func getClips(gameID: String, after: String? = nil, before: String? = nil, startedAt: String? = nil, endedAt: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ClipResponse>, APIError>) -> Void) {
+        requestAPI(endpoint: "clips?game_id=\(gameID)", requestMethod: .GET, onCompletion: onCompletion)
     }
     
-    func getClips(clipIDs: [String], after: String? = nil, before: String? = nil, startedAt: String? = nil, endedAt: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ClipResponse>, TwitchAPIError>) -> Void) {
+    func getClips(clipIDs: [String], after: String? = nil, before: String? = nil, startedAt: String? = nil, endedAt: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ClipResponse>, APIError>) -> Void) {
         if clipIDs.isEmpty {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -69,6 +69,6 @@ public extension SwiftTwitchAPI {
         var endpoint = "clips?"
         clipIDs.forEach({ endpoint.append("id=\($0)&") })
         
-        requestTwitchAPI(endpoint: endpoint, requestMethod: .GET, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, requestMethod: .GET, onCompletion: onCompletion)
     }
 }

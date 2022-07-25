@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct EmoteResponse: Codable {
+    struct Emote: Codable {
         public let id: String
         public let name: String
         public let images: Image
@@ -36,15 +36,15 @@ public extension SwiftTwitchAPI {
 
     }
     
-    func getChannelEmotes(broadcasterID: String, onCompletion: @escaping (Result<Paginated<EmoteResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "chat/emotes?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+    func getChannelEmotes(broadcasterID: String, onCompletion: @escaping (Result<Paginated<Emote>, APIError>) -> Void) {
+        requestAPI(endpoint: "chat/emotes?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
-    func getGlobalEmotes(onCompletion: @escaping (Result<Paginated<EmoteResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "chat/emotes/global", onCompletion: onCompletion)
+    func getGlobalEmotes(onCompletion: @escaping (Result<Paginated<Emote>, APIError>) -> Void) {
+        requestAPI(endpoint: "chat/emotes/global", onCompletion: onCompletion)
     }
     
-    func getEmoteSets(emoteSetIDs: [String], onCompletion: @escaping (Result<Paginated<EmoteResponse>, TwitchAPIError>) -> Void) {
+    func getEmoteSets(emoteSetIDs: [String], onCompletion: @escaping (Result<Paginated<Emote>, APIError>) -> Void) {
         if emoteSetIDs.isEmpty {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -53,6 +53,6 @@ public extension SwiftTwitchAPI {
         var endpoint = "chat/emotes/set?"
         emoteSetIDs.forEach({ endpoint.append("emote_set_id=\($0)&") })
         
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct UserResponse: Codable, Identifiable {
+    struct User: Codable, Identifiable {
         public let id: String
         public let login: String
         public let displayName: String
@@ -31,16 +31,16 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getUsers(ids: [String] = [], logins: [String] = [], onCompletion: @escaping (Result<Paginated<UserResponse>, TwitchAPIError>) -> Void) {
+    func getUsers(ids: [String] = [], logins: [String] = [], onCompletion: @escaping (Result<Paginated<User>, APIError>) -> Void) {
         var endpoint = "users?"
         ids.forEach({ endpoint.append("id=\($0)&") })
         logins.forEach({ endpoint.append("login=\($0)&") })
         
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func updateCurrentUser(description: String, onCompletion: @escaping (Result<Paginated<UserResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "users?description=\(description)", onCompletion: onCompletion)
+    func updateCurrentUser(description: String, onCompletion: @escaping (Result<Paginated<User>, APIError>) -> Void) {
+        requestAPI(endpoint: "users?description=\(description)", onCompletion: onCompletion)
     }
     
     struct FollowResponse: Codable {
@@ -61,7 +61,7 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getFollowsFromUser(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<FollowResponse>, TwitchAPIError>) -> Void) {
+    func getFollowsFromUser(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<FollowResponse>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         let endpoint = "users/follows?from_id=\(userID)&"
         
@@ -72,10 +72,10 @@ public extension SwiftTwitchAPI {
             parameters["first"] = String(first)
         }
         
-        requestTwitchAPI(endpoint: appendParameters(parameters, to: endpoint), onCompletion: onCompletion)
+        requestAPI(endpoint: appendParameters(parameters, to: endpoint), onCompletion: onCompletion)
     }
     
-    func getFollowsToUser(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<FollowResponse>, TwitchAPIError>) -> Void) {
+    func getFollowsToUser(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<FollowResponse>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         let endpoint = "users/follows?to_id=\(userID)&"
         
@@ -86,7 +86,7 @@ public extension SwiftTwitchAPI {
             parameters["first"] = String(first)
         }
         
-        requestTwitchAPI(endpoint: appendParameters(parameters, to: endpoint), onCompletion: onCompletion)
+        requestAPI(endpoint: appendParameters(parameters, to: endpoint), onCompletion: onCompletion)
     }
     
     struct BlockedUserResponse: Codable {
@@ -102,7 +102,7 @@ public extension SwiftTwitchAPI {
     }
 
     
-    func getUserBlocklist(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<BlockedUserResponse>, TwitchAPIError>) -> Void) {
+    func getUserBlocklist(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<BlockedUserResponse>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         let endpoint = "users/blocks?broadcaster_id=\(userID)"
         
@@ -113,14 +113,14 @@ public extension SwiftTwitchAPI {
             parameters["first"] = String(first)
         }
         
-        requestTwitchAPI(endpoint: appendParameters(parameters, to: endpoint), onCompletion: onCompletion)
+        requestAPI(endpoint: appendParameters(parameters, to: endpoint), onCompletion: onCompletion)
     }
     
-    func addUserToBlocklist(targetUserID: String, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "users/blocks?target_user_id=\(targetUserID)", requestMethod: .PUT, onCompletion: onCompletion)
+    func addUserToBlocklist(targetUserID: String, onCompletion: @escaping (Result<Int, APIError>) -> Void) {
+        requestAPI(endpoint: "users/blocks?target_user_id=\(targetUserID)", requestMethod: .PUT, onCompletion: onCompletion)
     }
     
-    func removeUserFromBlocklist(targetUserID: String, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "users/blocks?target_user_id=\(targetUserID)", requestMethod: .PUT, onCompletion: onCompletion)
+    func removeUserFromBlocklist(targetUserID: String, onCompletion: @escaping (Result<Int, APIError>) -> Void) {
+        requestAPI(endpoint: "users/blocks?target_user_id=\(targetUserID)", requestMethod: .PUT, onCompletion: onCompletion)
     }
 }

@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct BadgeResponse: Codable {
+    struct Badge: Codable {
         public let setID: String
         public let versions: [Version]
 
@@ -28,11 +28,11 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getChannelBadges(broadcasterID: String, onCompletion: @escaping (Result<Paginated<BadgeResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "chat/badges?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+    func getChannelBadges(broadcasterID: String, onCompletion: @escaping (Result<Paginated<Badge>, APIError>) -> Void) {
+        requestAPI(endpoint: "chat/badges?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
-    func getGlobalBadges(onCompletion: @escaping (Result<Paginated<BadgeResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "chat/badges/global", onCompletion: onCompletion)
+    func getGlobalBadges(onCompletion: @escaping (Result<Paginated<Badge>, APIError>) -> Void) {
+        requestAPI(endpoint: "chat/badges/global", onCompletion: onCompletion)
     }
 }

@@ -6,7 +6,7 @@
 //
 
 extension SwiftTwitchAPI {
-    public struct ChannelRewardResponse: Codable, Identifiable {
+    public struct ChannelReward: Codable, Identifiable {
         public let broadcasterName: String
         public let broadcasterLogin: String
         public let broadcasterID: String
@@ -128,13 +128,13 @@ extension SwiftTwitchAPI {
         return requestBody
     }
     
-    public func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
+    public func createChannelReward(broadcasterID: String, title: String, cost: Int, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelReward>, APIError>) -> Void) {
         let requestBody = getChannelRewardRequestBody(title: title, cost: cost, prompt: prompt, isEnabled: isEnabled, backgroundColor: backgroundColor, isUserInputRequired: isUserInputRequired, isMaxPerStreamEnabled: isMaxPerStreamEnabled, maxPerStream: maxPerStream, isMaxPerUserPerStreamEnabled: isMaxPerStreamEnabled, maxPerUserPerStream: maxPerUserPerStream, isGlobalCooldownEnabled: isGlobalCooldownEnabled, globalCooldown: globalCooldown, shouldSkipQueue: shouldSkipQueue)
         
-        requestTwitchAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
+        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)", requestMethod: .POST, requestBody: requestBody, onCompletion: onCompletion)
     }
     
-    public func updateChannelReward(broadcasterID: String, rewardID: String, title: String? = nil, cost: Int? = nil, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
+    public func updateChannelReward(broadcasterID: String, rewardID: String, title: String? = nil, cost: Int? = nil, prompt: String? = nil, isEnabled: Bool? = nil, backgroundColor: String? = nil, isUserInputRequired: Bool? = nil, isMaxPerStreamEnabled: Bool? = nil, maxPerStream: Int? = nil, isMaxPerUserPerStreamEnabled: Bool? = nil, maxPerUserPerStream: Int? = nil, isGlobalCooldownEnabled: Bool? = nil, globalCooldown: Int? = nil, shouldSkipQueue: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelReward>, APIError>) -> Void) {
         let requestBody = getChannelRewardRequestBody(title: title, cost: cost, prompt: prompt, isEnabled: isEnabled, backgroundColor: backgroundColor, isUserInputRequired: isUserInputRequired, isMaxPerStreamEnabled: isMaxPerStreamEnabled, maxPerStream: maxPerStream, isMaxPerUserPerStreamEnabled: isMaxPerStreamEnabled, maxPerUserPerStream: maxPerUserPerStream, isGlobalCooldownEnabled: isGlobalCooldownEnabled, globalCooldown: globalCooldown, shouldSkipQueue: shouldSkipQueue)
         
         if requestBody.isEmpty {
@@ -142,18 +142,18 @@ extension SwiftTwitchAPI {
             return
         }
 
-        requestTwitchAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
     
-    public func removeChannelReward(broadcasterID: String, rewardID: String, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .DELETE, onCompletion: onCompletion)
+    public func removeChannelReward(broadcasterID: String, rewardID: String, onCompletion: @escaping (Result<Int, APIError>) -> Void) {
+        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&id=\(rewardID)", requestMethod: .DELETE, onCompletion: onCompletion)
     }
     
-    public func getChannelRewards(broadcasterID: String, onlyManagable: Bool = false, onCompletion: @escaping (Result<Paginated<ChannelRewardResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&only_manageable_rewards=\(onlyManagable)", onCompletion: onCompletion)
+    public func getChannelRewards(broadcasterID: String, onlyManagable: Bool = false, onCompletion: @escaping (Result<Paginated<ChannelReward>, APIError>) -> Void) {
+        requestAPI(endpoint: "channel_points/custom_rewards?broadcaster_id=\(broadcasterID)&only_manageable_rewards=\(onlyManagable)", onCompletion: onCompletion)
     }
     
-    public struct ChannelRewardRedemptionResponse: Codable, Identifiable {
+    public struct ChannelRewardRedemption: Codable, Identifiable {
         public let broadcasterName: String
         public let broadcasterLogin: String
         public let broadcasterID: String
@@ -197,7 +197,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    public func getChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionIDs: [String]? = nil, status: ChannelRewardRedemptionResponse.Status? = nil, sort: ChannelRewardRedemptionResponse.SortType? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
+    public func getChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionIDs: [String]? = nil, status: ChannelRewardRedemption.Status? = nil, sort: ChannelRewardRedemption.SortType? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemption>, APIError>) -> Void) {
         if status == nil && redemptionIDs == nil {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -227,10 +227,10 @@ extension SwiftTwitchAPI {
                 endpoint += "&id=\(redemptionID)"
             }
         }
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    public func updateChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionIDs: [String], status: ChannelRewardRedemptionResponse.Status, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemptionResponse>, TwitchAPIError>) -> Void) {
+    public func updateChannelRewardRedemption(broadcasterID: String, rewardID: String, redemptionIDs: [String], status: ChannelRewardRedemption.Status, onCompletion: @escaping (Result<Paginated<ChannelRewardRedemption>, APIError>) -> Void) {
         if redemptionIDs.isEmpty {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -242,6 +242,6 @@ extension SwiftTwitchAPI {
         var endpoint = "channel_points/custom_rewards/redemptions?broadcaster_id=\(broadcasterID)&reward_id=\(rewardID)"
         redemptionIDs.forEach({ endpoint.append("id=\($0)&") })
 
-        requestTwitchAPI(endpoint: endpoint, requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
 }

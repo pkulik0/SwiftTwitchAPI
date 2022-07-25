@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct ChannelResponse: Codable {
+    struct Channel: Codable {
         public let broadcasterID: String
         public let broadcasterLogin: String
         public let broadcasterName: String 
@@ -30,7 +30,7 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getChannel(broadcasterIDs: [String], onCompletion: @escaping (Result<Paginated<ChannelResponse>, TwitchAPIError>) -> Void) {
+    func getChannel(broadcasterIDs: [String], onCompletion: @escaping (Result<Paginated<Channel>, APIError>) -> Void) {
         if broadcasterIDs.isEmpty {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -39,10 +39,10 @@ public extension SwiftTwitchAPI {
         var endpoint = "channels?"
         broadcasterIDs.forEach({ endpoint.append("broadcaster_id=\($0)&") })
 
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 
-    func modifyChannel(broadcasterID: String, gameID: String? = nil, broadcasterLanguage: String? = nil, title: String? = nil, delay: Int? = nil, onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+    func modifyChannel(broadcasterID: String, gameID: String? = nil, broadcasterLanguage: String? = nil, title: String? = nil, delay: Int? = nil, onCompletion: @escaping (Result<Int, APIError>) -> Void) {
         
         var requestBody: [String: Any] = [:]
         if let gameID = gameID {
@@ -63,7 +63,7 @@ public extension SwiftTwitchAPI {
             return
         }
         
-        requestTwitchAPI(endpoint: "channels?broadcaster_id=\(broadcasterID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
+        requestAPI(endpoint: "channels?broadcaster_id=\(broadcasterID)", requestMethod: .PATCH, requestBody: requestBody, onCompletion: onCompletion)
     }
     
     struct ChannelEditorResponse: Codable {
@@ -78,8 +78,8 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelEditorResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "channels/editors?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+    func getChannelEditors(broadcasterID: String, onCompletion: @escaping (Result<Paginated<ChannelEditorResponse>, APIError>) -> Void) {
+        requestAPI(endpoint: "channels/editors?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     struct CreatorGoalResponse: Codable {
@@ -105,8 +105,8 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getCreatorGoals(broadcasterID: String, onCompletion: @escaping (Result<Paginated<CreatorGoalResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "goals?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+    func getCreatorGoals(broadcasterID: String, onCompletion: @escaping (Result<Paginated<CreatorGoalResponse>, APIError>) -> Void) {
+        requestAPI(endpoint: "goals?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
     struct ChannelSearchResponse: Codable {
@@ -136,7 +136,7 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func findChannels(query: String, after: String? = nil, first: Int? = nil, showLiveOnly: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelSearchResponse>, TwitchAPIError>) -> Void) {
+    func findChannels(query: String, after: String? = nil, first: Int? = nil, showLiveOnly: Bool? = nil, onCompletion: @escaping (Result<Paginated<ChannelSearchResponse>, APIError>) -> Void) {
         let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         guard let encodedQuery = encodedQuery else {
             onCompletion(.failure(.invalidRequest))
@@ -155,7 +155,7 @@ public extension SwiftTwitchAPI {
             parameters["live_only"] = String(showLiveOnly)
         }
         
-        requestTwitchAPI(endpoint: "search/channels?query=\(encodedQuery)", onCompletion: onCompletion)
+        requestAPI(endpoint: "search/channels?query=\(encodedQuery)", onCompletion: onCompletion)
     }
     
     struct ChannelHypetrainResponse: Codable {
@@ -202,7 +202,7 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getHypetrainInformation(broadcasterID: String, first: Int? = nil, cursor: String? = nil, onCompletion: @escaping (Result<Paginated<ChannelHypetrainResponse>, TwitchAPIError>) -> Void) {
+    func getHypetrainInformation(broadcasterID: String, first: Int? = nil, cursor: String? = nil, onCompletion: @escaping (Result<Paginated<ChannelHypetrainResponse>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         if let first = first {
@@ -213,6 +213,6 @@ public extension SwiftTwitchAPI {
         }
         
         let endpoint = appendParameters(parameters, to: "hypetrain/events?broadcaster_id=\(broadcasterID)")
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

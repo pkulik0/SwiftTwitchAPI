@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct BitsLeaderboardResponse: Codable {
+    struct BitsLeaderboard: Codable {
         public let user_id: String
         public let user_login: String
         public let user_name: String
@@ -99,7 +99,7 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getBitsLeaderboard(count: Int? = nil, period: String? = nil, startedAt: String? = nil, userID: String? = nil, onCompletion: @escaping (Result<Paginated<BitsLeaderboardResponse>, TwitchAPIError>) -> Void) {
+    func getBitsLeaderboard(count: Int? = nil, period: String? = nil, startedAt: String? = nil, userID: String? = nil, onCompletion: @escaping (Result<Paginated<BitsLeaderboard>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let count = count {
             parameters["count"] = String(count)
@@ -114,15 +114,15 @@ public extension SwiftTwitchAPI {
             parameters["user_id"] = userID
         }
         let endpoint = appendParameters(parameters, to: "bits/leaderboard")
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getBitsCheermotes(broadcasterID: String? = nil, onCompletion: @escaping (Result<Paginated<BitsCheermoteResponse>, TwitchAPIError>) -> Void) {
+    func getBitsCheermotes(broadcasterID: String? = nil, onCompletion: @escaping (Result<Paginated<BitsCheermoteResponse>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         if let broadcasterID = broadcasterID {
             parameters["broadcaster_id"] = broadcasterID
         }
         let endpoint = appendParameters(parameters, to: "bits/cheermotes")
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
 }

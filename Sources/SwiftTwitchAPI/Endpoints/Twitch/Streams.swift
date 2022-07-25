@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct StreamResponse: Codable, Identifiable {
+    struct Stream: Codable, Identifiable {
         public let id: String
         public let userID: String
         public let userLogin: String
@@ -37,7 +37,7 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getStreams(gameIDs: [String] = [], languages: [String] = [], userIDs: [String] = [], userLogins: [String] = [], after: String? = nil, before: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<StreamResponse>, TwitchAPIError>) -> Void) {
+    func getStreams(gameIDs: [String] = [], languages: [String] = [], userIDs: [String] = [], userLogins: [String] = [], after: String? = nil, before: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<Stream>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         if let after = after {
@@ -57,10 +57,10 @@ public extension SwiftTwitchAPI {
         userLogins.forEach({ endpoint.append("user_login=\($0)&") })
         endpoint = appendParameters(parameters, to: endpoint)
         
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getFollowedStreams(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<StreamResponse>, TwitchAPIError>) -> Void) {
+    func getFollowedStreams(userID: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<Stream>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         if let after = after {
@@ -70,6 +70,6 @@ public extension SwiftTwitchAPI {
             parameters["first"] = String(first)
         }
         
-        requestTwitchAPI(endpoint: "streams/followed?user_id=\(userID)", onCompletion: onCompletion)
+        requestAPI(endpoint: "streams/followed?user_id=\(userID)", onCompletion: onCompletion)
     }
 }

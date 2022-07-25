@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct CommercialResponse: Codable {
+    struct Commercial: Codable {
         public let message: String
         public let length: Int
         public let retryAfter: Int
@@ -17,7 +17,7 @@ public extension SwiftTwitchAPI {
             case retryAfter = "retry_after"
         }
     }
-    func runCommercial(broadcasterID: String, length: Int, onCompletion: @escaping (Result<Paginated<CommercialResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "channels/commercial", requestMethod: .POST, requestBody: ["broadcaster_id": broadcasterID, "length": length], onCompletion: onCompletion)
+    func runCommercial(broadcasterID: String, length: Int, onCompletion: @escaping (Result<Paginated<Commercial>, APIError>) -> Void) {
+        requestAPI(endpoint: "channels/commercial", requestMethod: .POST, requestBody: ["broadcaster_id": broadcasterID, "length": length], onCompletion: onCompletion)
     }
 }

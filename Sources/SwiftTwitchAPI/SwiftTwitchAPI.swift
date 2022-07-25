@@ -13,6 +13,10 @@ public struct SwiftTwitchAPI {
         case GET, POST, PUT, PATCH, DELETE
     }
     
+    internal enum API {
+        case Twitch, BetterTTV, SevenTV
+    }
+    
     internal func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
         let parametersString = parameters.map { (key, value) in
             "\(key)=\(value)"
@@ -39,8 +43,21 @@ public struct SwiftTwitchAPI {
         return request
     }
     
-    internal func requestTwitchAPI(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
+    private func getApiURL(api: API, endpoint: String) -> URL? {
+        switch api {
+        case .Twitch:
+            return URL(string: "https://api.twitch.tv/helix/\(endpoint)")
+        case .BetterTTV:
+            return URL(string: "https://api.betterttv.net/3/cached/\(endpoint)")
+        case .SevenTV:
+            return URL(string: "https://api.7tv.app/v2/\(endpoint)")
+        }
+    }
+    
+    internal func requestAPI(endpoint: String, requestMethod: RequestMethod = .GET, api: API = .Twitch, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, APIError>) -> Void) {
+        guard let apiURL = getApiURL(api: api, endpoint: endpoint) else {
+            return
+        }
         let request = getRequest(url: apiURL, method: requestMethod, body: requestBody)
         
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -67,8 +84,10 @@ public struct SwiftTwitchAPI {
         }.resume()
     }
     
-    internal func requestTwitchAPI<T: Codable>(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<T, TwitchAPIError>) -> Void) {
-        let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
+    internal func requestAPI<T: Codable>(endpoint: String, requestMethod: RequestMethod = .GET, api: API = .Twitch, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<T, APIError>) -> Void) {
+        guard let apiURL = getApiURL(api: api, endpoint: endpoint) else {
+            return
+        }
         let request = getRequest(url: apiURL, method: requestMethod, body: requestBody)
 
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -77,22 +96,22 @@ public struct SwiftTwitchAPI {
                 onCompletion(.failure(.invalidResponse))
                 return
             }
-            
+            print("oho")
             guard let data = data else {
                 onCompletion(.failure(.invalidResponse))
                 return
             }
-            
+            print("oho2")
             if let response = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
                 onCompletion(.failure(.serverError(error: response)))
                 return
             }
-            
+            print("oho3")
             if let response = try? JSONDecoder().decode(T.self, from: data) {
                 onCompletion(.success(response))
                 return
             }
-
+            print("oho4")
             onCompletion(.failure(.unknownData))
         }.resume()
     }

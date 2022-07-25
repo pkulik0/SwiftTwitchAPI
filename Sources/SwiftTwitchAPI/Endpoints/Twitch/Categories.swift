@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct CategoryResponse: Codable {
+    struct Category: Codable {
         public let id: String
         public let name: String
         public let boxArtUrl: String
@@ -18,7 +18,7 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getTopCategories(after: String? = nil, before: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<CategoryResponse>, TwitchAPIError>) -> Void) {
+    func getTopCategories(after: String? = nil, before: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<Category>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         if let after = after {
@@ -32,10 +32,10 @@ public extension SwiftTwitchAPI {
         }
         
         let endpoint = appendParameters(parameters, to: "games/top")
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func getCategories(gameIDs: [String] = [], names: [String] = [], onCompletion: @escaping (Result<Paginated<CategoryResponse>, TwitchAPIError>) -> Void) {
+    func getCategories(gameIDs: [String] = [], names: [String] = [], onCompletion: @escaping (Result<Paginated<Category>, APIError>) -> Void) {
         if gameIDs.isEmpty && names.isEmpty {
             onCompletion(.failure(.tooFewParameters))
             return
@@ -45,10 +45,10 @@ public extension SwiftTwitchAPI {
         gameIDs.forEach({ endpoint.append("id=\($0)&") })
         names.forEach({ endpoint.append("name=\($0)&") })
         
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    func findCategories(query: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<CategoryResponse>, TwitchAPIError>) -> Void) {
+    func findCategories(query: String, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<Category>, APIError>) -> Void) {
         let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         guard let encodedQuery = encodedQuery else {
             onCompletion(.failure(.invalidRequest))
@@ -64,6 +64,6 @@ public extension SwiftTwitchAPI {
             parameters["first"] = String(first)
         }
         
-        requestTwitchAPI(endpoint: "search/categories?query=\(encodedQuery)", onCompletion: onCompletion)
+        requestAPI(endpoint: "search/categories?query=\(encodedQuery)", onCompletion: onCompletion)
     }
 }

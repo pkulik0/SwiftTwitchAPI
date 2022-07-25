@@ -705,4 +705,63 @@ class SwiftTwitchAPITests: XCTestCase {
         
         wait(for: [expectation0, expectation1, expectation2], timeout: 30.0)
     }
+    
+    func testBetterTTV() throws {
+        let expectation0 = XCTestExpectation(description: "bttvGlobalEmotes")
+        let expectation1 = XCTestExpectation(description: "bttvChannelData")
+
+        api.getBttvGlobalEmotes { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation0.fulfill()
+        }
+        
+        api.getBttvChannelData(channelID: "109027939") { result in
+            switch(result) {
+            case .success(let response):
+                print(response)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+        
+        wait(for: [expectation0, expectation1], timeout: 30.0)
+    }
+    
+    func testFFZ() throws {
+        let expectation0 = XCTestExpectation(description: "api")
+
+        api.getFFZEmotes(channelID: "109027939") { result in
+            switch(result) {
+            case .success(let response):
+                print(response)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation0.fulfill()
+        }
+        
+        wait(for: [expectation0], timeout: 30.0)
+    }
+    
+    func testSevenTV() throws {
+        let expectation0 = XCTestExpectation(description: "api")
+
+        api.getSevenTVEmotes(channelID: "109027939") { result in
+            switch(result) {
+            case .success(let response):
+                print(response)
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation0.fulfill()
+        }
+        
+        wait(for: [expectation0], timeout: 30.0)
+    }
 }

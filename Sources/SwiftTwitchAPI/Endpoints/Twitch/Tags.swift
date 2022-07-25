@@ -6,7 +6,7 @@
 //
 
 extension SwiftTwitchAPI {
-    public struct TagResponse: Codable {
+    public struct Tag: Codable {
         public let tagID: String
         public let isAuto: Bool
         public let localizationNames: [String: String]
@@ -20,7 +20,7 @@ extension SwiftTwitchAPI {
         }
     }
     
-    public func getTags(tagIDs: [String]? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
+    public func getTags(tagIDs: [String]? = nil, after: String? = nil, first: Int? = nil, onCompletion: @escaping (Result<Paginated<Tag>, APIError>) -> Void) {
         var parameters: [String: String] = [:]
         
         var endpoint = "tags/streams?"
@@ -35,17 +35,17 @@ extension SwiftTwitchAPI {
         }
         endpoint = appendParameters(parameters, to: endpoint)
         
-        requestTwitchAPI(endpoint: endpoint, onCompletion: onCompletion)
+        requestAPI(endpoint: endpoint, onCompletion: onCompletion)
     }
     
-    public func getChannelTags(broadcasterID: String, onCompletion: @escaping (Result<Paginated<TagResponse>, TwitchAPIError>) -> Void) {
-        requestTwitchAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
+    public func getChannelTags(broadcasterID: String, onCompletion: @escaping (Result<Paginated<Tag>, APIError>) -> Void) {
+        requestAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", onCompletion: onCompletion)
     }
     
-    public func updateChannelTags(broadcasterID: String, tagIDs: [String] = [], onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+    public func updateChannelTags(broadcasterID: String, tagIDs: [String] = [], onCompletion: @escaping (Result<Int, APIError>) -> Void) {
         var requestBody: [String: Any] = [:]
         requestBody["tag_ids"] = tagIDs
         
-        requestTwitchAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", requestMethod: .PUT, requestBody: requestBody, onCompletion: onCompletion)
+        requestAPI(endpoint: "streams/tags?broadcaster_id=\(broadcasterID)", requestMethod: .PUT, requestBody: requestBody, onCompletion: onCompletion)
     }
 }
