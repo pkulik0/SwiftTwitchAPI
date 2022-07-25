@@ -24,20 +24,25 @@ public struct SwiftTwitchAPI {
         return endpoint
     }
     
-    internal func requestAPI(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
-        let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
-        
-        var request = URLRequest(url: apiURL)
+    private func getRequest(url: URL, method: RequestMethod, body: [String: Any]) -> URLRequest {
+        var request = URLRequest(url: url)
         request.setValue(clientID, forHTTPHeaderField: "Client-Id")
         request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = requestMethod.rawValue
+        request.httpMethod = method.rawValue
         
-        if requestMethod != .GET {
+        if method != .GET {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+            request.httpBody = try? JSONSerialization.data(withJSONObject: method)
         }
-
+        
+        return request
+    }
+    
+    internal func requestAPI(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<Int, TwitchAPIError>) -> Void) {
+        let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
+        let request = getRequest(url: apiURL, method: requestMethod, body: requestBody)
+        
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -64,17 +69,7 @@ public struct SwiftTwitchAPI {
     
     internal func requestAPI<T: Codable>(endpoint: String, requestMethod: RequestMethod = .GET, requestBody: [String: Any] = [:],  onCompletion: @escaping (Result<T, TwitchAPIError>) -> Void) {
         let apiURL = URL(string: "https://api.twitch.tv/helix/\(endpoint)")!
-        
-        var request = URLRequest(url: apiURL)
-        request.setValue(clientID, forHTTPHeaderField: "Client-Id")
-        request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = requestMethod.rawValue
-        
-        if requestMethod != .GET {
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
-        }
+        let request = getRequest(url: apiURL, method: requestMethod, body: requestBody)
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
