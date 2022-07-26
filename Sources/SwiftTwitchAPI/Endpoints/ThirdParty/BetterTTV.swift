@@ -13,7 +13,7 @@ public extension SwiftTwitchAPI {
         public let userID: String?
         public let user: User?
 
-        func getUrlString(size: Size) -> String {
+        public func getUrlString(size: Size) -> String {
             return "https://cdn.betterttv.net/emote/\(id)/\(size.rawValue)"
         }
         
@@ -46,11 +46,11 @@ public extension SwiftTwitchAPI {
     }
     
     struct BttvChannelData: Codable {
-        let id: String
-        let bots: [String]
-        let avatar: String
-        let channelEmotes: [BttvEmote]
-        let sharedEmotes: [BttvEmote]
+        public let id: String
+        public let bots: [String]
+        public let avatar: String
+        public let channelEmotes: [BttvEmote]
+        public let sharedEmotes: [BttvEmote]
     }
     
     func getBttvGlobalEmotes(onCompletion: @escaping (Result<[BttvEmote], APIError>) -> Void) {
