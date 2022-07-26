@@ -96,22 +96,22 @@ public struct SwiftTwitchAPI {
                 onCompletion(.failure(.invalidResponse))
                 return
             }
-            print("oho")
+
             guard let data = data else {
                 onCompletion(.failure(.invalidResponse))
                 return
             }
-            print("oho2")
+
             if let response = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
                 onCompletion(.failure(.serverError(error: response)))
                 return
             }
-            print("oho3")
+
             if let response = try? JSONDecoder().decode(T.self, from: data) {
                 onCompletion(.success(response))
                 return
             }
-            print("oho4")
+
             onCompletion(.failure(.unknownData))
         }.resume()
     }

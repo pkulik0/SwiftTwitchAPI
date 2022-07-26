@@ -13,6 +13,10 @@ public extension SwiftTwitchAPI {
         public let userID: String?
         public let user: User?
 
+        func getUrlString(size: Size) -> String {
+            return "https://cdn.betterttv.net/emote/\(id)/\(size.rawValue)"
+        }
+        
         enum CodingKeys: String, CodingKey {
             case id, code, imageType, user
             case userID = "userId"
@@ -24,25 +28,21 @@ public extension SwiftTwitchAPI {
             case the3X = "3x"
         }
         
-        func getUrlString(size: Size) -> String {
-            return "https://cdn.betterttv.net/emote/\(id)/\(size.rawValue)"
+        public struct User: Codable {
+            public let id: String
+            public let name: String
+            public let displayName: String
+            public let providerID: String?
+
+            enum CodingKeys: String, CodingKey {
+                case id, name, displayName
+                case providerID = "providerId"
+            }
         }
     }
     
     enum ImageType: String, Codable {
         case gif, png
-    }
-    
-    struct User: Codable {
-        public let id: String
-        public let name: String
-        public let displayName: String
-        public let providerID: String?
-
-        enum CodingKeys: String, CodingKey {
-            case id, name, displayName
-            case providerID = "providerId"
-        }
     }
     
     struct BttvChannelData: Codable {

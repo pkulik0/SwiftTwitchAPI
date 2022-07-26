@@ -712,8 +712,12 @@ class SwiftTwitchAPITests: XCTestCase {
 
         api.getBttvGlobalEmotes { result in
             switch(result) {
-            case .success(_):
-                break
+            case .success(let emotes):
+                guard let emote = emotes.first else {
+                    XCTFail("No emotes received.")
+                    break
+                }
+                XCTAssertFalse(emote.getUrlString(size: .the1X).isEmpty)
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
@@ -722,8 +726,8 @@ class SwiftTwitchAPITests: XCTestCase {
         
         api.getBttvChannelData(channelID: "109027939") { result in
             switch(result) {
-            case .success(let response):
-                print(response)
+            case .success(_):
+                break
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
@@ -738,8 +742,8 @@ class SwiftTwitchAPITests: XCTestCase {
 
         api.getFFZEmotes(channelID: "109027939") { result in
             switch(result) {
-            case .success(let response):
-                print(response)
+            case .success(_):
+                break
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
@@ -754,8 +758,8 @@ class SwiftTwitchAPITests: XCTestCase {
 
         api.getSevenTVEmotes(channelID: "109027939") { result in
             switch(result) {
-            case .success(let response):
-                print(response)
+            case .success(_):
+                break
             case .failure(let error):
                 XCTFail(error.localizedDescription)
             }
