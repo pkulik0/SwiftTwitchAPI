@@ -14,9 +14,9 @@ public extension SwiftTwitchAPI {
         public let imageType: ImageType
         
         public struct Images: Codable {
-            let the1X: String
-            let the2X: String?
-            let the4X: String?
+            public let the1X: String
+            public let the2X: String?
+            public let the4X: String?
 
             enum CodingKeys: String, CodingKey {
                 case the1X = "1x"
@@ -26,8 +26,9 @@ public extension SwiftTwitchAPI {
         }
         
         public struct User: Codable {
-            let id: Int
-            let name, displayName: String
+            public let id: Int
+            public let name: String
+            public let displayName: String
         }
     }
     
