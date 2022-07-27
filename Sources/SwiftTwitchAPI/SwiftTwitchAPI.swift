@@ -14,7 +14,7 @@ public struct SwiftTwitchAPI {
     }
     
     internal enum API {
-        case Twitch, BetterTTV, SevenTV
+        case Twitch, TEmotes
     }
     
     internal func appendParameters(_ parameters: [String: String], to endpoint: String) -> String {
@@ -47,10 +47,8 @@ public struct SwiftTwitchAPI {
         switch api {
         case .Twitch:
             return URL(string: "https://api.twitch.tv/helix/\(endpoint)")
-        case .BetterTTV:
-            return URL(string: "https://api.betterttv.net/3/cached/\(endpoint)")
-        case .SevenTV:
-            return URL(string: "https://api.7tv.app/v2/\(endpoint)")
+        case .TEmotes:
+            return URL(string: "https://emotes.adamcy.pl/v1/\(endpoint)")
         }
     }
     

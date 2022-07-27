@@ -706,41 +706,12 @@ class SwiftTwitchAPITests: XCTestCase {
         wait(for: [expectation0, expectation1, expectation2], timeout: 30.0)
     }
     
-    func testBetterTTV() throws {
-        let expectation0 = XCTestExpectation(description: "bttvGlobalEmotes")
-        let expectation1 = XCTestExpectation(description: "bttvChannelData")
+    func testTEmotes() throws {
+        let expectation0 = XCTestExpectation(description: "AllGlobalEmotes")
+        let expectation1 = XCTestExpectation(description: "AllChannelEmotes")
 
-        api.getBttvGlobalEmotes { result in
-            switch(result) {
-            case .success(let emotes):
-                guard let emote = emotes.first else {
-                    XCTFail("No emotes received.")
-                    break
-                }
-                XCTAssertFalse(emote.getUrlString(size: .the1X).isEmpty)
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-            expectation0.fulfill()
-        }
-        
-        api.getBttvChannelData(channelID: "109027939") { result in
-            switch(result) {
-            case .success(_):
-                break
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-            expectation1.fulfill()
-        }
-        
-        wait(for: [expectation0, expectation1], timeout: 30.0)
-    }
-    
-    func testFFZ() throws {
-        let expectation0 = XCTestExpectation(description: "ffzChannelEmotes")
 
-        api.getFFZEmotes(channelID: "109027939") { result in
+        api.getAllGlobalEmotes { result in
             switch(result) {
             case .success(_):
                 break
@@ -750,25 +721,7 @@ class SwiftTwitchAPITests: XCTestCase {
             expectation0.fulfill()
         }
         
-        wait(for: [expectation0], timeout: 30.0)
-    }
-    
-    func testSevenTV() throws {
-        let expectation0 = XCTestExpectation(description: "SevenTVGlobalEmotes")
-        let expectation1 = XCTestExpectation(description: "SevenTVChannelEmotes")
-
-
-        api.getSevenTVGlobalEmotes { result in
-            switch(result) {
-            case .success(_):
-                break
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-            expectation0.fulfill()
-        }
-        
-        api.getSevenTVChannelEmotes(channelID: "109027939") { result in
+        api.getAllChannelEmotes(channelID: "109027939") { result in
             switch(result) {
             case .success(_):
                 break
