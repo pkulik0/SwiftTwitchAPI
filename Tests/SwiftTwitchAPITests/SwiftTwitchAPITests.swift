@@ -287,7 +287,7 @@ class SwiftTwitchAPITests: XCTestCase {
         
         var emoteSetID: String?
         
-        api.getChannelEmotes(broadcasterID: testerID) { result in
+        api.getTwitchChannelEmotes(broadcasterID: testerID) { result in
             expectation1.fulfill()
             switch(result) {
             case .success(let response):
@@ -299,7 +299,7 @@ class SwiftTwitchAPITests: XCTestCase {
             }
         }
         
-        api.getGlobalEmotes { result in
+        api.getTwitchGlobalEmotes { result in
             expectation2.fulfill()
             switch(result) {
             case .success(let result):
