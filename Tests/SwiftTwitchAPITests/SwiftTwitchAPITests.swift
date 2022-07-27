@@ -738,7 +738,7 @@ class SwiftTwitchAPITests: XCTestCase {
     }
     
     func testFFZ() throws {
-        let expectation0 = XCTestExpectation(description: "api")
+        let expectation0 = XCTestExpectation(description: "ffzChannelEmotes")
 
         api.getFFZEmotes(channelID: "109027939") { result in
             switch(result) {
@@ -754,9 +754,11 @@ class SwiftTwitchAPITests: XCTestCase {
     }
     
     func testSevenTV() throws {
-        let expectation0 = XCTestExpectation(description: "api")
+        let expectation0 = XCTestExpectation(description: "SevenTVGlobalEmotes")
+        let expectation1 = XCTestExpectation(description: "SevenTVChannelEmotes")
 
-        api.getSevenTVEmotes(channelID: "109027939") { result in
+
+        api.getSevenTVGlobalEmotes { result in
             switch(result) {
             case .success(_):
                 break
@@ -766,6 +768,16 @@ class SwiftTwitchAPITests: XCTestCase {
             expectation0.fulfill()
         }
         
-        wait(for: [expectation0], timeout: 30.0)
+        api.getSevenTVChannelEmotes(channelID: "109027939") { result in
+            switch(result) {
+            case .success(_):
+                break
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            expectation1.fulfill()
+        }
+        
+        wait(for: [expectation0, expectation1], timeout: 30.0)
     }
 }

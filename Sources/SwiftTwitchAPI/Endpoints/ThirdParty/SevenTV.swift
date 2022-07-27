@@ -50,7 +50,11 @@ public extension SwiftTwitchAPI {
         }
     }
     
-    func getSevenTVEmotes(channelID: String, onCompletion: @escaping (Result<[SevenTVEmote], APIError>) -> Void) {
+    func getSevenTVChannelEmotes(channelID: String, onCompletion: @escaping (Result<[SevenTVEmote], APIError>) -> Void) {
         requestAPI(endpoint: "users/\(channelID)/emotes/", api: .SevenTV, onCompletion: onCompletion)
+    }
+    
+    func getSevenTVGlobalEmotes(onCompletion: @escaping (Result<[SevenTVEmote], APIError>) -> Void) {
+        requestAPI(endpoint: "emotes/global", api: .SevenTV, onCompletion: onCompletion)
     }
 }
