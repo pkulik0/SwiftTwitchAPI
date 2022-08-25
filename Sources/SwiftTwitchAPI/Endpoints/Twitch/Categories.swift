@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct Category: Codable {
+    struct Category: Codable, Identifiable {
         public let id: String
         public let name: String
         public let boxArtUrl: String

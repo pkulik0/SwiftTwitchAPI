@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct Emote: Codable {
+    struct Emote: Codable, Identifiable {
         public let id: String
         public let name: String
         public let images: Image

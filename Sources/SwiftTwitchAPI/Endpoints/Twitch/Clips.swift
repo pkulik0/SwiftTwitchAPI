@@ -6,7 +6,7 @@
 //
 
 public extension SwiftTwitchAPI {
-    struct NewClip: Codable {
+    struct NewClip: Codable, Identifiable {
         public let id: String
         public let editUrl: String
         
@@ -20,7 +20,7 @@ public extension SwiftTwitchAPI {
         requestAPI(endpoint: "clips?broadcaster_id=\(broadcasterID)&has_delay=\(hasDelay)", requestMethod: .POST, onCompletion: onCompletion)
     }
     
-    struct ClipResponse: Codable {
+    struct ClipResponse: Codable, Identifiable {
         public let id: String
         public let url: String
         public let embedURL: String
