@@ -8,7 +8,7 @@
 public extension SwiftTwitchAPI {
     class Paginated<WrappedType: Codable>: Codable {
         public struct PaginationData: Codable {
-            let cursor: String
+            public let cursor: String
         }
 
         public let data: [WrappedType]
