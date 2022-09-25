@@ -2,8 +2,8 @@ import XCTest
 @testable import SwiftTwitchAPI
 
 class SwiftTwitchAPITests: XCTestCase {
-    let api = SwiftTwitchAPI(clientID: "thffseh4mtlmaqnd89rm17ugso8s30", authToken: "3184l994nsn2lgpq8gaup3oe3xifty")
-    let testerID = "118350674"
+    let api = SwiftTwitchAPI(clientID: "<client-id>", authToken: "<auth-token>")
+    let testerID = "<tester-id>"
     
     func testGetChannels() throws {
         let expectation = XCTestExpectation(description: "api")
