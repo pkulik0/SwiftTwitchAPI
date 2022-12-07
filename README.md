@@ -1,3 +1,3 @@
 # SwiftTwitchAPI
 
-Unoffical Swift library for Twitch's public API
+Unoffical Swift wrapper for Twitch's public API. Made for my custom Twitch app.
